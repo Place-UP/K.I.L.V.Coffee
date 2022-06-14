@@ -26,7 +26,7 @@ public class ClienteController {
                 .findById(id)
                 .orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Cliente não encontrado"));
+                                "Client not found."));
     }
 
     @PostMapping
@@ -51,15 +51,15 @@ public class ClienteController {
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update( @PathVariable Integer id,
-                        @RequestBody Cliente cliente ){
-        clientes
+                        @RequestBody Client cliente ){
+        clients
                 .findById(id)
                 .map( clienteExistente -> {
                     cliente.setId(clienteExistente.getId());
-                    clientes.save(cliente);
+                    clients.save(cliente);
                     return clienteExistente;
                 }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Cliente não encontrado") );
+                        "Client not found") );
     }
 
     @GetMapping

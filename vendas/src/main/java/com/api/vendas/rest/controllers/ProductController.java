@@ -1,7 +1,7 @@
 package com.api.vendas.rest.controllers;
 
-import com.api.vendas.domain.entities.Produto;
-import com.api.vendas.domain.repositories.Produtos;
+import com.api.vendas.domain.entities.Product;
+import com.api.vendas.domain.repositories.Products;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
@@ -15,23 +15,23 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/api/produtos")
-public class ProdutoController {
+public class ProductController {
 
-    private Produtos repository;
+    private Products repository;
 
-    public ProdutoController(Produtos repository) {
+    public ProductController(Products repository) {
         this.repository = repository;
     }
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public Produto save( @RequestBody Produto produto ){
+    public Product save( @RequestBody Product produto ){
         return repository.save(produto);
     }
 
     @PutMapping("{id}")
     @ResponseStatus(NO_CONTENT)
-    public void update( @PathVariable Integer id, @RequestBody Produto produto ){
+    public void update( @PathVariable Integer id, @RequestBody Product product ){
         repository
                 .findById(id)
                 .map( p -> {
@@ -40,7 +40,7 @@ public class ProdutoController {
                     return produto;
                 }).orElseThrow( () ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Produto não encontrado."));
+                                "Product not found."));
     }
 
     @DeleteMapping("{id}")
@@ -53,16 +53,16 @@ public class ProdutoController {
                     return Void.TYPE;
                 }).orElseThrow( () ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Produto não encontrado."));
+                                "Product not found."));
     }
 
     @GetMapping("{id}")
-    public Produto getById(@PathVariable Integer id){
+    public Product getById(@PathVariable Integer id){
         return repository
                 .findById(id)
                 .orElseThrow( () ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Produto não encontrado."));
+                                "Product not found."));
     }
 
     @GetMapping

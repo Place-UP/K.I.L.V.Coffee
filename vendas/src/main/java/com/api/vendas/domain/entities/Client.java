@@ -12,27 +12,27 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table( name = "cliente" )
-public class Cliente {
+@Table( name = "client" )
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "nome", length = 100)
-    private String nome;
+    @Column(name = "name", length = 100)
+    private String name;
 
     @Column(name = "cpf", length = 11)
     private String cpf;
 
     @JsonIgnore
-    @OneToMany( mappedBy = "cliente" , fetch = FetchType.LAZY )
-    private Set<Pedido> pedidos;
+    @OneToMany( mappedBy = "client" , fetch = FetchType.LAZY )
+    private Set<Reservation> reservations;
 
-    public Cliente(Integer id, String nome) {
+    public Client(Integer id, String name) {
         this.id = id;
-        this.nome = nome;
+        this.name = name;
     }
 
 }

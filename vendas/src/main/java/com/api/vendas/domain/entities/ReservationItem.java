@@ -10,8 +10,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "item_pedido")
-public class ItemPedido {
+@Table(name = "reservation_item")
+public class ReservationItem  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,15 +19,15 @@ public class ItemPedido {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "pedido_id")
-    private Pedido pedido;
+    @JoinColumn(name = "reservation")
+    private Reservation reservation;
 
     @ManyToOne
-    @JoinColumn(name = "produto_id")
-    private Produto produto;
+    @JoinColumn(name = "product")
+    private Product product;
 
     @Column
-    private Integer quantidade;
+    private Integer quantity;
 
 
 }

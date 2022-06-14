@@ -14,8 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "pedido")
-public class Pedido {
+@Table(name = "reservation")
+public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,11 +23,11 @@ public class Pedido {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    @JoinColumn(name = "client_id")
+    private Client client;
 
-    @Column(name = "data_pedido")
-    private LocalDate dataPedido;
+    @Column(name = "reservation_date")
+    private LocalDate reservationDate;
 
     @Column(name = "total", precision = 20, scale = 2)
     private BigDecimal total;
@@ -36,7 +36,7 @@ public class Pedido {
     @Column(name = "status")
     private StatusPedido status;
 
-    @OneToMany(mappedBy = "pedido")
-    private List<ItemPedido> itens;
+    @OneToMany(mappedBy = "reservation")
+    private List<ReservationItem> items;
 
 }

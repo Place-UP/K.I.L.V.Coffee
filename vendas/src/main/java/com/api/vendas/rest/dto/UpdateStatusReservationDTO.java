@@ -5,8 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AtualizacaoStatusPedidoDTO {
-    private String novoStatus;
+public class UpdateStatusReservationDTO {
+    private String newStatus;
 
 
 }

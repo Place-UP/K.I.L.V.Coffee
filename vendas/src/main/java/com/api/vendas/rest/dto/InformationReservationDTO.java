@@ -12,12 +12,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class InformacoesPedidoDTO {
-    private Integer codigo;
+public class InformationReservationDTO {
+    private Integer code;
     private String cpf;
-    private String nomeCliente;
+    private String nameClient;
     private BigDecimal total;
-    private String dataPedido;
+    private String dateReservation;
     private String status;
-    private List<InformacaoItemPedidoDTO> items;
+    private List<InformationItemReservationDTO> items;
 }

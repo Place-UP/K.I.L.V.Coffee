@@ -1,17 +1,18 @@
 package com.api.vendas.rest.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PedidoDTO {
-    private Integer cliente;
-    private BigDecimal total;
-    private List<ItemPedidoDTO> items;
+@Builder
+public class InformationItemReservationDTO {
+    private String productDescription;
+    private BigDecimal priceUnitary;
+    private Integer quantity;
 }

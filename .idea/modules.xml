@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/UdemySpring.iml" filepath="$PROJECT_DIR$/.idea/UdemySpring.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/BackEnd.iml" filepath="$PROJECT_DIR$/.idea/BackEnd.iml" />
       <module fileurl="file://$PROJECT_DIR$/placeup/placeup.iml" filepath="$PROJECT_DIR$/placeup/placeup.iml" />
     </modules>
   </component>

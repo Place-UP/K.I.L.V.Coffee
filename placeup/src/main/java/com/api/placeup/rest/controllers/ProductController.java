@@ -5,10 +5,13 @@ import com.api.placeup.domain.repositories.Products;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -66,14 +69,22 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> find(Product filter ){
+    public ResponseEntity<Object> find( Product filter, @RequestParam("order") String order) {
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
-                .withStringMatcher(
-                        ExampleMatcher.StringMatcher.CONTAINING );
+                .withStringMatcher( ExampleMatcher.StringMatcher.CONTAINING );
 
-        Example example = Example.of(filter, matcher);
-        return repository.findAll(example);
+
+        Example<Product> example = Example.of(filter, matcher);
+        List<Product> list = repository.findAll(example);
+
+        Comparator<Product> compareByPrice = Comparator.comparing(Product::getPrice);
+
+        if(Objects.equals(order, "ascending")) list.sort(compareByPrice);
+
+        if(Objects.equals(order, "descending")) list.sort(compareByPrice.reversed());
+
+        return ResponseEntity.ok(list);
     }
 }

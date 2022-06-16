@@ -40,23 +40,24 @@ public class ClientController {
     public void delete( @PathVariable Integer id ){
         clients.findById(id)
                 .map( client -> {
-                    clients.delete(client);
+                    clients.delete(client );
                     return client;
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Client not found."));
+                        "Client not found.") );
+
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update( @PathVariable Integer id,
-                        @RequestBody Client client ){
+                        @RequestBody Client cliente ){
         clients
                 .findById(id)
-                .map( clientExistente -> {
-                    client.setId(clientExistente.getId());
-                    clients.save(client);
-                    return clientExistente;
+                .map( clienteExistente -> {
+                    cliente.setId(clienteExistente.getId());
+                    clients.save(cliente);
+                    return clienteExistente;
                 }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Client not found") );
     }
@@ -72,4 +73,5 @@ public class ClientController {
         Example example = Example.of(filter, matcher);
         return clients.findAll(example);
     }
+
 }

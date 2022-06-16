@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -43,4 +45,9 @@ public class Seller {
 
     @Column(name = "deaf")
     private Boolean deaf;
+
+    //Product
+    @JsonIgnore
+    @OneToMany( mappedBy = "seller" , fetch = FetchType.LAZY )
+    private Set<Product> products;
 }

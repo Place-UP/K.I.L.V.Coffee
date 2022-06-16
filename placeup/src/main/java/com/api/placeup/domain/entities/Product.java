@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Entity
 @Table( name = "products" )
 public class Product {
@@ -25,4 +25,7 @@ public class Product {
     @Column( name = "price" )
     private BigDecimal price;
 
+    @ManyToOne
+    @JoinColumn(name = "seller")
+    private Seller seller;
 }

@@ -1,7 +1,13 @@
 package com.api.placeup.rest.controllers;
 
 import com.api.placeup.domain.entities.Product;
+import com.api.placeup.domain.entities.Reservation;
+import com.api.placeup.domain.entities.Seller;
 import com.api.placeup.domain.repositories.Products;
+import com.api.placeup.domain.repositories.Sellers;
+import com.api.placeup.rest.dto.ProductDTO;
+import com.api.placeup.rest.dto.ReservationDTO;
+import com.api.placeup.services.ProductService;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
@@ -20,16 +26,19 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @RequestMapping("/api/produtos")
 public class ProductController {
 
+    private ProductService service;
     private Products repository;
 
-    public ProductController(Products repository) {
+    public ProductController(ProductService service, Products repository) {
+        this.service = service;
         this.repository = repository;
     }
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public Product save( @RequestBody Product produto ){
-        return repository.save(produto);
+    public Integer save( @RequestBody ProductDTO dto ){
+        Product product = service.save(dto);
+        return product.getId();
     }
 
     @PutMapping("{id}")

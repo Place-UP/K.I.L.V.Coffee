@@ -2,10 +2,7 @@ package com.api.placeup.services.impl;
 
 import com.api.placeup.domain.entities.*;
 import com.api.placeup.domain.enums.StatusPedido;
-import com.api.placeup.domain.repositories.Clients;
-import com.api.placeup.domain.repositories.Products;
-import com.api.placeup.domain.repositories.ReservationItems;
-import com.api.placeup.domain.repositories.Reservations;
+import com.api.placeup.domain.repositories.*;
 import com.api.placeup.exceptions.BusinessRuleException;
 import com.api.placeup.exceptions.ReservationNotFoundException;
 import com.api.placeup.rest.dto.ReservationDTO;
@@ -27,6 +24,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final Reservations repository;
     private final Clients clientsRepository;
+    private final Sellers sellersRepository;
     private final Products productRepository;
     private final ReservationItems reservationItems;
 
@@ -39,6 +37,11 @@ public class ReservationServiceImpl implements ReservationService {
                 .findById(clientId)
                 .orElseThrow(() -> new BusinessRuleException("Invalid client code."));
 
+        Integer sellerId = dto.getSeller();
+        Seller seller = sellersRepository
+                .findById(sellerId)
+                .orElseThrow(() -> new BusinessRuleException("Invalid seller code."));
+
         List<BigDecimal> prices = getProductPrice(dto.getItems());
         BigDecimal total = totalCalculation(prices);
 
@@ -46,6 +49,7 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setTotal(total);
         reservation.setReservationDate(LocalDate.now());
         reservation.setClient(client);
+        reservation.setSeller(seller);
         reservation.setStatus(StatusPedido.PENDENTE);
 
         List<ReservationItem> reservationItem = convertItems(reservation, dto.getItems());

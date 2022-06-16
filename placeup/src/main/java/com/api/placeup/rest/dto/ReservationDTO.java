@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ReservationDTO {
     private Integer client;
+    private Integer seller;
     private BigDecimal total;
     private List<ReservationItemDTO> items;
 }

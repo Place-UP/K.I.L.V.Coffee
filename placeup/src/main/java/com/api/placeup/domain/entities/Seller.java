@@ -50,4 +50,7 @@ public class Seller {
     @JsonIgnore
     @OneToMany( mappedBy = "seller" , fetch = FetchType.LAZY )
     private Set<Product> products;
+
+    @OneToMany( mappedBy = "seller" , fetch = FetchType.LAZY )
+    private Set<Reservation> reservations;
 }

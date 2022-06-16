@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -25,6 +26,9 @@ public class Client {
 
     @Column(name = "email", length = 100)
     private String email;
+
+    @Column(name = "password", length = 10)
+    private String password;
 
     @JsonIgnore
     @OneToMany( mappedBy = "client" , fetch = FetchType.LAZY )

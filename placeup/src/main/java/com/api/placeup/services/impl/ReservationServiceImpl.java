@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -38,8 +39,11 @@ public class ReservationServiceImpl implements ReservationService {
                 .findById(clientId)
                 .orElseThrow(() -> new BusinessRuleException("Invalid client code."));
 
+        List<BigDecimal> prices = getProductPrice(dto.getItems());
+        BigDecimal total = totalCalculation(prices);
+
         Reservation reservation = new Reservation();
-        reservation.setTotal(dto.getTotal());
+        reservation.setTotal(total);
         reservation.setReservationDate(LocalDate.now());
         reservation.setClient(client);
         reservation.setStatus(StatusPedido.PENDENTE);
@@ -90,4 +94,29 @@ public class ReservationServiceImpl implements ReservationService {
                     return reservationItem;
                 }).collect(Collectors.toList());
     }
+
+    private List<BigDecimal> getProductPrice(List<ReservationItemDTO> items) {
+        return items
+                .stream()
+                .map( dto -> {
+                    Integer productId = dto.getProduct();
+                    Product product = productRepository
+                            .findById(productId)
+                            .orElseThrow(
+                                    () -> new BusinessRuleException(
+                                            "Invalid product code: "+ productId
+                                    ));
+
+                    return product.getPrice();
+                }).collect(Collectors.toList());
+    }
+
+    private BigDecimal totalCalculation(List<BigDecimal> prices) {
+        BigDecimal total = BigDecimal.valueOf(0.00);
+        for(BigDecimal price : prices) {
+            total = total.add(price);
+        }
+        return total;
+    }
+
 }

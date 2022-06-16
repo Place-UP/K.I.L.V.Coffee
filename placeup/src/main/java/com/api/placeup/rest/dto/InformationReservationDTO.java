@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class InformationReservationDTO {
     private Integer code;
-    private String cpf;
+    private String email;
     private String nameClient;
     private BigDecimal total;
     private String dateReservation;

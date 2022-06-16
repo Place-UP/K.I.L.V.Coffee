@@ -7,6 +7,4 @@ import lombok.Setter;
 @Setter
 public class UpdateStatusReservationDTO {
     private String newStatus;
-
-
 }

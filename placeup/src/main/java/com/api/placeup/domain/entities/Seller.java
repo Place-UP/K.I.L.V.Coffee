@@ -6,14 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table( name = "client" )
-public class Client {
+@Table( name = "seller" )
+public class Seller {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,13 +25,22 @@ public class Client {
     @Column(name = "email", length = 100)
     private String email;
 
-    @JsonIgnore
-    @OneToMany( mappedBy = "client" , fetch = FetchType.LAZY )
-    private Set<Reservation> reservations;
+    @Column(name = "cnpj", length = 14)
+    private String cnpj;
 
-    public Client(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    @Column(name = "phone", length = 11)
+    private String phote;
 
+    //Accessibility
+    @Column(name = "mute")
+    private boolean mute;
+
+    @Column(name = "blind")
+    private boolean blind;
+
+    @Column(name = "wheelchair")
+    private boolean wheelchair;
+
+    @Column(name = "deaf")
+    private boolean deaf;
 }

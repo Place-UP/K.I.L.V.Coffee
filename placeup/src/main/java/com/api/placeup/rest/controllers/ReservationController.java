@@ -48,7 +48,7 @@ public class ReservationController {
     @PatchMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     public void updateStatus(@PathVariable Integer id ,
-                             @RequestBody UpdateStatusReservationDTO dto){
+                                @RequestBody UpdateStatusReservationDTO dto){
         String newStatus = dto.getNewStatus();
         service.updateStatus(id, StatusPedido.valueOf(newStatus));
     }
@@ -58,7 +58,7 @@ public class ReservationController {
                 .builder()
                 .code(reservation.getId())
                 .dateReservation(reservation.getReservationDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
-                .cpf(reservation.getClient().getCpf())
+                .email(reservation.getClient().getEmail())
                 .nameClient(reservation.getClient().getName())
                 .total(reservation.getTotal())
                 .status(reservation.getStatus().name())

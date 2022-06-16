@@ -107,7 +107,8 @@ public class ReservationServiceImpl implements ReservationService {
                                             "Invalid product code: "+ productId
                                     ));
 
-                    return product.getPrice();
+                    BigDecimal quantity = new BigDecimal(dto.getQuantity());
+                    return product.getPrice().multiply(quantity);
                 }).collect(Collectors.toList());
     }
 

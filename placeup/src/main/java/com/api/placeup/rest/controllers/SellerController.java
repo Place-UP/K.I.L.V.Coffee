@@ -1,5 +1,7 @@
 package com.api.placeup.rest.controllers;
 
+import com.api.placeup.domain.entities.Client;
+import com.api.placeup.domain.entities.Product;
 import com.api.placeup.domain.entities.Seller;
 import com.api.placeup.domain.repositories.Sellers;
 import org.springframework.data.domain.Example;

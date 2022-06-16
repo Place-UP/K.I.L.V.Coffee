@@ -1,0 +1,39 @@
+*** Client ***
+{
+    "name": "Jose",
+    "email": "teste@email.com"
+}
+
+*** PRODUCT ***
+{
+    "description": "Sapatenis",
+    "price": 25.00
+}
+
+*** RESERVATION ***
+{
+    "client": 2,
+    "total": 149.00,
+    "items": [
+        {
+            "product": 3,
+            "quantity": 1
+        },
+        {
+            "product": 4,
+            "quantity": 2
+        }
+    ]
+}
+
+*** SELLER ***
+{
+    "name": "Seu Jorge",
+    "email": "teste@email.com",
+    "cnpj": "12345678912345",
+    "phone": "11932654277",
+    "mute": true,
+    "blind": true,
+    "wheelchair": false,
+    "deaf": true
+}

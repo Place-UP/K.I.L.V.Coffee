@@ -29,7 +29,7 @@ public class Seller {
     private String cnpj;
 
     @Column(name = "phone", length = 11)
-    private String phote;
+    private String phone;
 
     //Accessibility
     @Column(name = "mute")

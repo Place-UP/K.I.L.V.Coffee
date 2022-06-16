@@ -1,9 +1,6 @@
 package com.api.placeup.services.impl;
 
-import com.api.placeup.domain.entities.Client;
-import com.api.placeup.domain.entities.Product;
-import com.api.placeup.domain.entities.Reservation;
-import com.api.placeup.domain.entities.ReservationItem;
+import com.api.placeup.domain.entities.*;
 import com.api.placeup.domain.enums.StatusPedido;
 import com.api.placeup.domain.repositories.Clients;
 import com.api.placeup.domain.repositories.Products;
@@ -32,6 +29,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final Products productRepository;
     private final ReservationItems reservationItems;
 
+
     @Override
     @Transactional
     public Reservation save(ReservationDTO dto ) {
@@ -44,7 +42,7 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setTotal(dto.getTotal());
         reservation.setReservationDate(LocalDate.now());
         reservation.setClient(client);
-        reservation.setStatus(StatusPedido.REALIZADO);
+        reservation.setStatus(StatusPedido.PENDENTE);
 
         List<ReservationItem> reservationItem = convertItems(reservation, dto.getItems());
         repository.save(reservation);
@@ -91,6 +89,5 @@ public class ReservationServiceImpl implements ReservationService {
                     reservationItem.setProduct(product);
                     return reservationItem;
                 }).collect(Collectors.toList());
-
     }
 }

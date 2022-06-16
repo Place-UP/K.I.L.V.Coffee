@@ -33,14 +33,14 @@ public class Seller {
 
     //Accessibility
     @Column(name = "mute")
-    private boolean mute;
+    private Boolean mute;
 
     @Column(name = "blind")
-    private boolean blind;
+    private Boolean blind;
 
     @Column(name = "wheelchair")
-    private boolean wheelchair;
+    private Boolean wheelchair;
 
     @Column(name = "deaf")
-    private boolean deaf;
+    private Boolean deaf;
 }

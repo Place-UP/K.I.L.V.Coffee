@@ -5,6 +5,7 @@ import com.api.placeup.domain.repositories.Sellers;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -62,7 +63,15 @@ public class SellerController {
     }
 
     @GetMapping
-    public List<Seller> find(Seller filter ){
-        return sellers.findAll();
+    public ResponseEntity<Object> find( Seller filter ) {
+        ExampleMatcher matcher = ExampleMatcher
+                .matching()
+                .withIgnoreCase()
+                .withStringMatcher( ExampleMatcher.StringMatcher.CONTAINING );
+
+        Example<Seller> example = Example.of(filter, matcher);
+        List<Seller> list = sellers.findAll(example);
+
+        return ResponseEntity.ok(list);
     }
 }

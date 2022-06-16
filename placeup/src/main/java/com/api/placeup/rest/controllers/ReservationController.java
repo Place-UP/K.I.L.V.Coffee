@@ -67,6 +67,7 @@ public class ReservationController {
                 .nameClient(reservation.getClient().getName())
                 .total(reservation.getTotal())
                 .status(reservation.getStatus().name())
+                .nameSeller(reservation.getSeller().getName())
                 .items(converter(reservation.getItems()))
                 .build();
     }

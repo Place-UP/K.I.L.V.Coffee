@@ -19,5 +19,6 @@ public class InformationReservationDTO {
     private BigDecimal total;
     private String dateReservation;
     private String status;
+    private String nameSeller;
     private List<InformationItemReservationDTO> items;
 }

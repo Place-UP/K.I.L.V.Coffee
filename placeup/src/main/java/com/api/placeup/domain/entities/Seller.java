@@ -33,6 +33,9 @@ public class Seller {
     @Column(name = "phone", length = 11)
     private String phone;
 
+    @Column(name = "password", length = 10)
+    private String password;
+
     //Accessibility
     @Column(name = "mute")
     private Boolean mute;
@@ -50,4 +53,9 @@ public class Seller {
     @JsonIgnore
     @OneToMany( mappedBy = "seller" , fetch = FetchType.LAZY )
     private Set<Product> products;
+
+    //Address
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address")
+    private Address address;
 }

@@ -51,16 +51,14 @@ public class Seller {
 
     //Product
     @JsonIgnore
-    @OneToMany( mappedBy = "seller" , fetch = FetchType.LAZY )
+    @OneToMany( mappedBy = "seller" , fetch = FetchType.LAZY)
     private Set<Product> products;
 
-<<<<<<< HEAD
     //Address
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address")
     private Address address;
-=======
+
     @OneToMany( mappedBy = "seller" , fetch = FetchType.LAZY )
     private Set<Reservation> reservations;
->>>>>>> 7b11c01f0659dd798c9aa6d2e5e1f196cc36dfb7
 }

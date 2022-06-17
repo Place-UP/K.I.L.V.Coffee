@@ -30,22 +30,24 @@ public class SellerServiceImpl implements SellerService {
     @Transactional
     public Seller save(SellerDTO dto) {
 
-        Seller seller = new Seller();
         Address address = new Address();
-
-        seller.setName(dto.getName());
-        seller.setEmail(dto.getEmail());
-        seller.setCnpj(dto.getCnpj());
-        seller.setPhone(dto.getPhone());
-        seller.setPassword(dto.getPassword());
-        sellersRepository.save(seller);
+        Seller seller = new Seller();
 
         address.setState(dto.getState());
         address.setCity(dto.getCity());
         address.setDistrict(dto.getDistrict());
         address.setStreet(dto.getStreet());
         address.setHouseNumber(dto.getHouseNumber());
-        addressRepository.save(address);
+        // addressRepository.save(address);
+
+
+        seller.setAddress(address);
+        seller.setName(dto.getName());
+        seller.setEmail(dto.getEmail());
+        seller.setCnpj(dto.getCnpj());
+        seller.setPhone(dto.getPhone());
+        seller.setPassword(dto.getPassword());
+        sellersRepository.save(seller);
 
         return seller;
     }

@@ -17,6 +17,10 @@ public class SellerDTO {
     private String cnpj;
     private String phone;
     private String password;
+    private Boolean mute;
+    private Boolean blind;
+    private Boolean wheelchair;
+    private Boolean deaf;
 
     private Integer address;
     private String state;
@@ -24,4 +28,5 @@ public class SellerDTO {
     private String district;
     private String street;
     private String houseNumber;
+
 }

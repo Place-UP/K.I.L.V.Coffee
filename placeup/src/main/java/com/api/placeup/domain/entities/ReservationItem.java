@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "reservation_item")
 public class ReservationItem  {
@@ -28,6 +28,5 @@ public class ReservationItem  {
 
     @Column
     private Integer quantity;
-
 
 }

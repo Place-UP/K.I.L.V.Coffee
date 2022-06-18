@@ -6,12 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table( name = "seller" )
 public class Seller {
@@ -33,10 +32,10 @@ public class Seller {
     @Column(name = "phone", length = 11)
     private String phone;
 
+    @JsonIgnore
     @Column(name = "password", length = 10)
     private String password;
 
-    //Accessibility
     @Column(name = "mute")
     private Boolean mute;
 
@@ -49,16 +48,16 @@ public class Seller {
     @Column(name = "deaf")
     private Boolean deaf;
 
-    //Product
     @JsonIgnore
     @OneToMany( mappedBy = "seller" , fetch = FetchType.LAZY)
     private Set<Product> products;
 
-    //Address
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address")
     private Address address;
 
+    @JsonIgnore
     @OneToMany( mappedBy = "seller" , fetch = FetchType.LAZY )
     private Set<Reservation> reservations;
+
 }

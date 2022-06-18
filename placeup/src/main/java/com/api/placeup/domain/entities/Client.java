@@ -6,12 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table( name = "client" )
 public class Client {
@@ -33,10 +32,5 @@ public class Client {
     @JsonIgnore
     @OneToMany( mappedBy = "client" , fetch = FetchType.LAZY )
     private Set<Reservation> reservations;
-
-    public Client(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
 }

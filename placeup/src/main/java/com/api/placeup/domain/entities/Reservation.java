@@ -1,6 +1,6 @@
 package com.api.placeup.domain.entities;
 
-import com.api.placeup.domain.enums.StatusPedido;
+import com.api.placeup.domain.enums.ReservationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,11 +9,10 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "reservation")
 public class Reservation {
@@ -35,7 +34,7 @@ public class Reservation {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private StatusPedido status;
+    private ReservationStatus status;
 
     @OneToMany(mappedBy = "reservation")
     private List<ReservationItem> items;

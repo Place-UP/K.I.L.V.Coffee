@@ -47,6 +47,10 @@ public class SellerServiceImpl implements SellerService {
         seller.setCnpj(dto.getCnpj());
         seller.setPhone(dto.getPhone());
         seller.setPassword(dto.getPassword());
+        seller.setMute(dto.getMute());
+        seller.setBlind(dto.getBlind());
+        seller.setWheelchair(dto.getWheelchair());
+        seller.setDeaf(dto.getDeaf());
         sellersRepository.save(seller);
 
         return seller;

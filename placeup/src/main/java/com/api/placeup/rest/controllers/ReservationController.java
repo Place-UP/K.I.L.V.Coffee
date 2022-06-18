@@ -2,17 +2,12 @@ package com.api.placeup.rest.controllers;
 
 import com.api.placeup.domain.entities.Reservation;
 import com.api.placeup.domain.entities.ReservationItem;
-import com.api.placeup.domain.entities.Seller;
-import com.api.placeup.domain.enums.StatusPedido;
+import com.api.placeup.domain.enums.ReservationStatus;
 import com.api.placeup.rest.dto.InformationItemReservationDTO;
 import com.api.placeup.rest.dto.InformationReservationDTO;
 import com.api.placeup.rest.dto.ReservationDTO;
 import com.api.placeup.rest.dto.UpdateStatusReservationDTO;
 import com.api.placeup.services.ReservationService;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -55,7 +50,7 @@ public class ReservationController {
     public void updateStatus(@PathVariable Integer id ,
                                 @RequestBody UpdateStatusReservationDTO dto){
         String newStatus = dto.getNewStatus();
-        service.updateStatus(id, StatusPedido.valueOf(newStatus));
+        service.updateStatus(id, ReservationStatus.valueOf(newStatus));
     }
 
     private InformationReservationDTO convert(Reservation reservation){

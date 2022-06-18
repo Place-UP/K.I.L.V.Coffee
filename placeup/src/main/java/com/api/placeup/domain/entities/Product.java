@@ -28,4 +28,5 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "seller")
     private Seller seller;
+
 }

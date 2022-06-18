@@ -1,7 +1,7 @@
 package com.api.placeup.services.impl;
 
 import com.api.placeup.domain.entities.*;
-import com.api.placeup.domain.enums.StatusPedido;
+import com.api.placeup.domain.enums.ReservationStatus;
 import com.api.placeup.domain.repositories.*;
 import com.api.placeup.exceptions.BusinessRuleException;
 import com.api.placeup.exceptions.ReservationNotFoundException;
@@ -50,7 +50,7 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setReservationDate(LocalDate.now());
         reservation.setClient(client);
         reservation.setSeller(seller);
-        reservation.setStatus(StatusPedido.PENDENTE);
+        reservation.setStatus(ReservationStatus.PENDING);
 
         List<ReservationItem> reservationItem = convertItems(reservation, dto.getItems());
         repository.save(reservation);
@@ -66,7 +66,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void updateStatus( Integer id, StatusPedido reservationStatus ) {
+    public void updateStatus( Integer id, ReservationStatus reservationStatus ) {
         repository
                 .findById(id)
                 .map( reservation -> {

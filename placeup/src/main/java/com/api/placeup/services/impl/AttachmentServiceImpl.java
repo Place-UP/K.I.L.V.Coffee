@@ -38,7 +38,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public Attachment getAttachment(String fileId) throws Exception {
+    public Attachment getAttachment(Integer fileId) throws Exception {
         return attachments
                 .findById(fileId)
                 .orElseThrow(

@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Data
@@ -26,6 +28,7 @@ public class Client {
     @Column(name = "email", length = 100)
     private String email;
 
+    @JsonIgnore
     @Column(name = "password", length = 10)
     private String password;
 

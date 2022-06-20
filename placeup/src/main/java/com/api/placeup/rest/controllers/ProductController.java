@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -36,14 +37,14 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public Integer save( @RequestBody ProductDTO dto ){
+    public Integer save( @RequestBody @Valid ProductDTO dto ){
         Product product = service.save(dto);
         return product.getId();
     }
 
     @PutMapping("{id}")
     @ResponseStatus(NO_CONTENT)
-    public void update( @PathVariable Integer id, @RequestBody Product product ){
+    public void update( @PathVariable Integer id, @RequestBody @Valid Product product ){
         repository
                 .findById(id)
                 .map( p -> {

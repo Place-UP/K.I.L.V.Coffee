@@ -2,12 +2,15 @@ package com.api.placeup.rest.controllers;
 
 import com.api.placeup.domain.entities.Client;
 import com.api.placeup.domain.repositories.Clients;
+import com.api.placeup.rest.dto.ClientDTO;
+import com.api.placeup.services.ClientService;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -15,8 +18,10 @@ import java.util.List;
 public class ClientController {
 
     private Clients clients;
+    private ClientService service;
 
-    public ClientController( Clients clients ) {
+    public ClientController( Clients clients, ClientService service) {
+        this.service = service;
         this.clients = clients;
     }
 
@@ -31,8 +36,9 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Client save( @RequestBody Client client ){
-        return clients.save(client);
+    public Integer save(@RequestBody @Valid ClientDTO dto ){
+        Client client = service.save(dto);
+        return client.getId();
     }
 
     @DeleteMapping("{id}")
@@ -51,7 +57,7 @@ public class ClientController {
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update( @PathVariable Integer id,
-                        @RequestBody Client cliente ){
+                        @RequestBody @Valid Client cliente ){
         clients
                 .findById(id)
                 .map( clienteExistente -> {

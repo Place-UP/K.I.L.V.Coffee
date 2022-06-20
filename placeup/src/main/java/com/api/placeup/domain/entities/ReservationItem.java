@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @NoArgsConstructor
@@ -26,7 +27,7 @@ public class ReservationItem  {
     @JoinColumn(name = "product")
     private Product product;
 
-    @Column
+    @Column(name = "quantity")
     private Integer quantity;
 
 }

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -39,7 +40,7 @@ public class SellerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer save(@RequestBody SellerDTO dto){
+    public Integer save(@RequestBody @Valid SellerDTO dto){
         Seller seller = service.save(dto);
         return seller.getId();
     }
@@ -59,7 +60,7 @@ public class SellerController {
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update( @PathVariable Integer id,
-                        @RequestBody Seller seller){
+                        @RequestBody @Valid Seller seller){
         sellers
                 .findById(id)
                 .map( sellerExistent -> {

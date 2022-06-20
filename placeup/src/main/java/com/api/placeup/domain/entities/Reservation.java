@@ -1,11 +1,13 @@
 package com.api.placeup.domain.entities;
 
 import com.api.placeup.domain.enums.ReservationStatus;
+import com.api.placeup.validations.NotEmptyList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;

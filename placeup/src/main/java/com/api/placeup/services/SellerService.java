@@ -8,5 +8,4 @@ import java.util.Optional;
 public interface SellerService {
     Seller save (SellerDTO dto);
     Optional<Seller> getCompleteSeller(Integer id);
-
 }

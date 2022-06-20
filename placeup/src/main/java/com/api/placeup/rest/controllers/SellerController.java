@@ -3,6 +3,7 @@ package com.api.placeup.rest.controllers;
 import com.api.placeup.domain.entities.Seller;
 import com.api.placeup.domain.repositories.Addresses;
 import com.api.placeup.domain.repositories.Sellers;
+import com.api.placeup.exceptions.BusinessRuleException;
 import com.api.placeup.rest.dto.SellerDTO;
 import com.api.placeup.services.SellerService;
 import org.springframework.data.domain.Example;
@@ -40,9 +41,9 @@ public class SellerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer save(@RequestBody @Valid SellerDTO dto){
-        Seller seller = service.save(dto);
-        return seller.getId();
+    public Integer save(@RequestBody @Valid SellerDTO dto) {
+            Seller seller = service.save(dto);
+            return seller.getId();
     }
 
     @DeleteMapping("{id}")

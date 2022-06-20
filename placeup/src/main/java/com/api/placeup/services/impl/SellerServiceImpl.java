@@ -4,20 +4,14 @@ import com.api.placeup.domain.entities.Address;
 import com.api.placeup.domain.entities.Seller;
 import com.api.placeup.domain.repositories.Addresses;
 import com.api.placeup.domain.repositories.Sellers;
+import com.api.placeup.exceptions.BusinessRuleException;
 import com.api.placeup.rest.dto.SellerDTO;
 import com.api.placeup.services.SellerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +23,18 @@ public class SellerServiceImpl implements SellerService {
     @Override
     @Transactional
     public Seller save(SellerDTO dto) {
+        if(nameAlreadyExists(dto)) {
+            throw new BusinessRuleException("This name already is in use.");
+        }
+        if(cnpjAlreadyExists(dto)) {
+            throw new BusinessRuleException("This cnpj already is in use.");
+        }
+        if(emailAlreadyExists(dto)) {
+            throw new BusinessRuleException("This email already is in use.");
+        }
+        if(phoneAlreadyExists(dto)) {
+            throw new BusinessRuleException("This phone already is in use.");
+        }
 
         Address address = new Address();
         Seller seller = new Seller();
@@ -54,6 +60,26 @@ public class SellerServiceImpl implements SellerService {
         sellersRepository.save(seller);
 
         return seller;
+    }
+
+    private boolean cnpjAlreadyExists(SellerDTO dto) {
+        Optional<Seller> seller = sellersRepository.findByCnpj(dto.getCnpj());
+        return seller.isPresent();
+    }
+
+    private boolean emailAlreadyExists(SellerDTO dto) {
+        Optional<Seller> seller = sellersRepository.findByEmail(dto.getEmail());
+        return seller.isPresent();
+    }
+
+    private boolean phoneAlreadyExists(SellerDTO dto) {
+        Optional<Seller> seller = sellersRepository.findByPhone(dto.getPhone());
+        return seller.isPresent();
+    }
+
+    private boolean nameAlreadyExists(SellerDTO dto) {
+        Optional<Seller> seller = sellersRepository.findByName(dto.getName());
+        return seller.isPresent();
     }
 
     @Override

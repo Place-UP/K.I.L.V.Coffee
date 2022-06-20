@@ -1,34 +1,32 @@
 package com.api.placeup.domain.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Lob;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table( name = "attachment" )
+@Data@NoArgsConstructor
 public class Attachment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Integer id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
 
-    @Column(name = "file_name")
     private String fileName;
-
-    @Column(name = "file_type")
     private String fileType;
 
     @Lob
-    @Column(name = "data")
     private byte[] data;
 
-
-    public Attachment(String fileName, String contentType, byte[] bytes) {
+    public Attachment(String fileName, String fileType, byte[] data) {
+        this.fileName = fileName;
+        this.fileType = fileType;
+        this.data = data;
     }
 }

@@ -12,42 +12,41 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.awt.*;
-
 @RestController
 @RequestMapping("/api/imagens")
 public class AttachmentController {
 
-    private AttachmentService service;
+    private AttachmentService attachmentService;
 
-    public AttachmentController(AttachmentService service) {
-        this.service = service;
+    public AttachmentController(AttachmentService attachmentService) {
+        this.attachmentService = attachmentService;
     }
 
     @PostMapping("/upload")
-    public AttachmentDTO uploadFile(@RequestParam("file") MultipartFile file ) {
+    public AttachmentDTO uploadFile(@RequestParam("file")MultipartFile file) throws Exception {
         Attachment attachment = null;
-        String downloadUrl = "";
-        attachment = service.saveAttachment(file);
-        downloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(String.valueOf(attachment.getId()))
+        String downloadURl = "";
+        attachment = attachmentService.saveAttachment(file);
+        downloadURl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/imagens/download/")
+                .path(attachment.getId())
                 .toUriString();
 
-        return new AttachmentDTO(
-                attachment.getFileName(),
-                downloadUrl,
+        return new AttachmentDTO(attachment.getFileName(),
+                downloadURl,
                 file.getContentType(),
-                file.getSize()
-        );
+                file.getSize());
     }
 
-    @GetMapping("/download/{id}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable Integer id) {
+    @GetMapping("/download/{fileId}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) throws Exception {
         Attachment attachment = null;
-        attachment = service.getAttachment(id);
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(attachment.getFileType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +
-                        attachment.getFileName() + "\"").body(new ByteArrayResource(attachment.getData()));
+        attachment = attachmentService.getAttachment(fileId);
+        return  ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(attachment.getFileType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + attachment.getFileName()
+                                + "\"")
+                .body(new ByteArrayResource(attachment.getData()));
     }
 }

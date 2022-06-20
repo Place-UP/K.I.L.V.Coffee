@@ -1,7 +1,10 @@
 package com.api.placeup.domain.repositories;
 
+
 import com.api.placeup.domain.entities.Attachment;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface Attachments extends JpaRepository<Attachment, Integer> {
+@Repository
+public interface Attachments extends JpaRepository<Attachment, String> {
 }

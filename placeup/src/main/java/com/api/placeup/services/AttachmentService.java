@@ -4,7 +4,7 @@ import com.api.placeup.domain.entities.Attachment;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface AttachmentService {
-    Attachment saveAttachment(MultipartFile file);
+    Attachment saveAttachment(MultipartFile file) throws Exception;
 
-    Attachment getAttachment(Integer id);
+    Attachment getAttachment(String fileId) throws Exception;
 }

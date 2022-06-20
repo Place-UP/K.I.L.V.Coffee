@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/lojas")
+@RequestMapping("/api/sellers")
 public class SellerController {
 
     private Sellers sellers;

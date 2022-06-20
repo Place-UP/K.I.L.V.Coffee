@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping("/api/imagens")
+@RequestMapping("/api/attachments")
 public class AttachmentController {
 
     private AttachmentService attachmentService;
@@ -22,13 +22,13 @@ public class AttachmentController {
         this.attachmentService = attachmentService;
     }
 
-    @PostMapping("/upload")
+    @PostMapping
     public AttachmentDTO uploadFile(@RequestParam("file")MultipartFile file) throws Exception {
         Attachment attachment = null;
         String downloadURl = "";
         attachment = attachmentService.saveAttachment(file);
         downloadURl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/imagens/download/")
+                .path("/api/attachments/")
                 .path(attachment.getId())
                 .toUriString();
 
@@ -38,10 +38,10 @@ public class AttachmentController {
                 file.getSize());
     }
 
-    @GetMapping("/download/{fileId}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) throws Exception {
+    @GetMapping("/{id}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String id) throws Exception {
         Attachment attachment = null;
-        attachment = attachmentService.getAttachment(fileId);
+        attachment = attachmentService.getAttachment(id);
         return  ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(attachment.getFileType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION,

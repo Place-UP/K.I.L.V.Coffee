@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
-@RequestMapping("/api/pedidos")
+@RequestMapping("/api/reservations")
 public class ReservationController {
 
     private ReservationService service;

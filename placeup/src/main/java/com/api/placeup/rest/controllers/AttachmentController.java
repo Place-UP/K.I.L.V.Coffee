@@ -2,7 +2,9 @@ package com.api.placeup.rest.controllers;
 
 import com.api.placeup.domain.entities.Attachment;
 import com.api.placeup.domain.entities.Product;
+import com.api.placeup.domain.entities.Seller;
 import com.api.placeup.domain.repositories.Products;
+import com.api.placeup.domain.repositories.Sellers;
 import com.api.placeup.rest.dto.AttachmentDTO;
 import com.api.placeup.services.AttachmentService;
 import org.springframework.core.io.ByteArrayResource;
@@ -22,10 +24,14 @@ public class AttachmentController {
 
     private AttachmentService attachmentService;
     private Products productsRepository;
+    private Sellers sellersRepository;
 
-    public AttachmentController(AttachmentService attachmentService, Products productsRepository) {
+    public AttachmentController(AttachmentService attachmentService,
+                                Products productsRepository,
+                                Sellers sellersRepository) {
         this.attachmentService = attachmentService;
         this.productsRepository = productsRepository;
+        this.sellersRepository = sellersRepository;
     }
 
     @PostMapping("/product/{id}")
@@ -53,6 +59,34 @@ public class AttachmentController {
                 file.getContentType(),
                 file.getSize());
     }
+
+    @PostMapping("/seller/{id}")
+    public AttachmentDTO uploadSellerFile(@RequestParam("file")MultipartFile file, @PathVariable Integer id ) throws Exception {
+        Seller seller = sellersRepository
+                .findById(id)
+                .orElseThrow( () ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Product not found."));
+
+        Attachment attachment = null;
+        String downloadURl = "";
+        attachment = attachmentService.saveAttachment(file);
+        downloadURl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/attachments/")
+                .path(String.valueOf(attachment.getId()))
+                .toUriString();
+
+        seller.setId(seller.getId());
+        seller.setImageLink(downloadURl);
+        sellersRepository.save(seller);
+
+        return new AttachmentDTO(attachment.getFileName(),
+                downloadURl,
+                file.getContentType(),
+                file.getSize());
+    }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Resource> downloadFile(@PathVariable Integer id) throws Exception {

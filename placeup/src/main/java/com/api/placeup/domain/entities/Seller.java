@@ -51,6 +51,9 @@ public class Seller {
     @Column(name = "deaf")
     private Boolean deaf;
 
+    @Column( name = "image_link")
+    private String imageLink;
+
     @JsonIgnore
     @OneToMany( mappedBy = "seller" , fetch = FetchType.LAZY)
     private Set<Product> products;

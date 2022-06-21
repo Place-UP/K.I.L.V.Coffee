@@ -26,6 +26,7 @@ public class Product {
     @Column( name = "price" )
     private BigDecimal price;
 
+    @Column( name = "image_link")
     private String imageLink;
 
     @ManyToOne

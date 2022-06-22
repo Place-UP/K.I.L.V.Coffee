@@ -18,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.swing.*;
+
 @RestController
 @RequestMapping("/api/attachments")
 public class AttachmentController {
@@ -86,9 +88,17 @@ public class AttachmentController {
                 file.getSize());
     }
 
-
-
     @GetMapping("/{id}")
+    public ResponseEntity<Resource> visualizeFile(@PathVariable Integer id) throws Exception {
+        Attachment attachment = null;
+        attachment = attachmentService.getAttachment(id);
+        byte[] data = attachment.getData();
+        return  ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(attachment.getFileType()))
+                .body(new ByteArrayResource(attachment.getData()));
+    }
+
+    @GetMapping("/download/{id}")
     public ResponseEntity<Resource> downloadFile(@PathVariable Integer id) throws Exception {
         Attachment attachment = null;
         attachment = attachmentService.getAttachment(id);

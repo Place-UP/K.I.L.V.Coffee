@@ -3,10 +3,13 @@ package com.api.placeup.rest.controllers;
 import com.api.placeup.domain.entities.Client;
 import com.api.placeup.domain.repositories.Clients;
 import com.api.placeup.rest.dto.ClientDTO;
+import com.api.placeup.security.jwt.JwtService;
 import com.api.placeup.services.ClientService;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -40,6 +43,8 @@ public class ClientController {
         Client client = service.save(dto);
         return client.getId();
     }
+
+
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

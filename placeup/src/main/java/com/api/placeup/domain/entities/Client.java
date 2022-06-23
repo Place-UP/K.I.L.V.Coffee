@@ -18,7 +18,7 @@ import java.util.Set;
 public class Client {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -29,11 +29,11 @@ public class Client {
     private String email;
 
     @JsonIgnore
-    @Column(name = "password", length = 10)
-    private String password;
-
-    @JsonIgnore
     @OneToMany( mappedBy = "client" , fetch = FetchType.LAZY )
     private Set<Reservation> reservations;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "login")
+    private User user;
 
 }

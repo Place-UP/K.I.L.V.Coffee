@@ -2,12 +2,16 @@ package com.api.placeup.services.impl;
 
 import com.api.placeup.domain.entities.Address;
 import com.api.placeup.domain.entities.Seller;
+import com.api.placeup.domain.entities.User;
+import com.api.placeup.domain.enums.UserType;
 import com.api.placeup.domain.repositories.Addresses;
 import com.api.placeup.domain.repositories.Sellers;
 import com.api.placeup.exceptions.BusinessRuleException;
 import com.api.placeup.rest.dto.SellerDTO;
+import com.api.placeup.security.jwt.JwtService;
 import com.api.placeup.services.SellerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +23,8 @@ public class SellerServiceImpl implements SellerService {
 
     private final Sellers sellersRepository;
     private final Addresses addressRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserServiceImpl userService;
 
     @Override
     @Transactional
@@ -38,6 +44,12 @@ public class SellerServiceImpl implements SellerService {
 
         Address address = new Address();
         Seller seller = new Seller();
+        User user = new User();
+
+
+        user.setLogin(dto.getEmail());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setSeller(dto.getSeller());
 
         address.setState(dto.getState());
         address.setCity(dto.getCity());
@@ -52,12 +64,13 @@ public class SellerServiceImpl implements SellerService {
         seller.setEmail(dto.getEmail());
         seller.setCnpj(dto.getCnpj());
         seller.setPhone(dto.getPhone());
-        seller.setPassword(dto.getPassword());
         seller.setMute(dto.getMute());
         seller.setBlind(dto.getBlind());
         seller.setWheelchair(dto.getWheelchair());
         seller.setDeaf(dto.getDeaf());
+
         sellersRepository.save(seller);
+        userService.save(user);
 
         return seller;
     }

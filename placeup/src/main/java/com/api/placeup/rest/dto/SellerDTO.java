@@ -15,7 +15,7 @@ import javax.validation.constraints.NotEmpty;
 @Builder
 public class SellerDTO {
 
-    private Integer seller;
+    private Integer sellerId;
 
     @NotEmpty(message = "{field.name.obligatory}")
     private String name;
@@ -55,5 +55,7 @@ public class SellerDTO {
 
     @NotEmpty(message = "{field.houseNumber.obligatory}")
     private String houseNumber;
+
+    private Boolean seller;
 
 }

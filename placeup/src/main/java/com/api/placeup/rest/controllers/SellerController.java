@@ -3,13 +3,18 @@ package com.api.placeup.rest.controllers;
 import com.api.placeup.domain.entities.Seller;
 import com.api.placeup.domain.repositories.Addresses;
 import com.api.placeup.domain.repositories.Sellers;
-import com.api.placeup.exceptions.BusinessRuleException;
 import com.api.placeup.rest.dto.SellerDTO;
+import com.api.placeup.security.jwt.JwtService;
 import com.api.placeup.services.SellerService;
+import com.api.placeup.services.impl.UserServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,17 +23,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/sellers")
+@RequiredArgsConstructor
 public class SellerController {
 
     private Sellers sellers;
 
-    private Addresses addresses;
-    private SellerService service;
+    private final Addresses addresses;
+    private final SellerService service;
+    private final UserServiceImpl userService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public SellerController( Sellers sellers, SellerService service ) {
-        this.sellers = sellers;
-        this.service = service;
-    }
 
     @GetMapping("{id}")
     public Seller getSellerById(@PathVariable Integer id ){
@@ -45,6 +50,7 @@ public class SellerController {
             Seller seller = service.save(dto);
             return seller.getId();
     }
+
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

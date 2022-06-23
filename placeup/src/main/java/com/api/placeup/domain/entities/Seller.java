@@ -19,7 +19,7 @@ import java.util.Set;
 public class Seller {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -34,10 +34,6 @@ public class Seller {
 
     @Column(name = "phone", length = 11)
     private String phone;
-
-    @JsonIgnore
-    @Column(name = "password", length = 10)
-    private String password;
 
     @Column(name = "mute")
     private Boolean mute;
@@ -65,5 +61,9 @@ public class Seller {
     @JsonIgnore
     @OneToMany( mappedBy = "seller" , fetch = FetchType.LAZY )
     private Set<Reservation> reservations;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "login")
+    private User user;
 
 }

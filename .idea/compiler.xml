@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="placeup" target="17" />
+      <module name="placeup" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

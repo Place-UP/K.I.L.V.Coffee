@@ -49,13 +49,14 @@ public class SellerServiceImpl implements SellerService {
 
         user.setLogin(dto.getEmail());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        user.setSeller(dto.getSeller());
+        user.setUserType(UserType.SELLER);
 
         address.setState(dto.getState());
         address.setCity(dto.getCity());
         address.setDistrict(dto.getDistrict());
         address.setStreet(dto.getStreet());
         address.setHouseNumber(dto.getHouseNumber());
+        address.setCep(dto.getCep());
         // addressRepository.save(address);
 
 

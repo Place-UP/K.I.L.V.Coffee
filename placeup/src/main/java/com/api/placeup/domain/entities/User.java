@@ -1,5 +1,6 @@
 package com.api.placeup.domain.entities;
 
+import com.api.placeup.domain.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +26,9 @@ public class User {
     @Column
     @NotEmpty(message = "{field.password.obligatory}")
     private String password;
+    
+    @Enumerated(EnumType.STRING)
     @Column
-    private boolean seller;
+    private UserType userType;
 
 }

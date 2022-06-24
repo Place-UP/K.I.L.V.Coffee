@@ -2,6 +2,7 @@ package com.api.placeup.services.impl;
 
 import com.api.placeup.domain.entities.Client;
 import com.api.placeup.domain.entities.User;
+import com.api.placeup.domain.enums.UserType;
 import com.api.placeup.domain.repositories.Clients;
 import com.api.placeup.domain.repositories.UserRespository;
 import com.api.placeup.exceptions.BusinessRuleException;
@@ -39,6 +40,7 @@ public class ClientServiceImpl implements ClientService {
 
         user.setLogin(dto.getEmail());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setUserType(UserType.CLIENT);
 
         client.setEmail(dto.getEmail());
         client.setName(dto.getName());

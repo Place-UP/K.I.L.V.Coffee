@@ -1,6 +1,7 @@
 package com.api.placeup.services.impl;
 
 import com.api.placeup.domain.entities.User;
+import com.api.placeup.domain.enums.UserType;
 import com.api.placeup.domain.repositories.UserRespository;
 import com.api.placeup.exceptions.InvalidPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EnumType;
+import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserDetailsService {
@@ -39,7 +43,8 @@ public class UserServiceImpl implements UserDetailsService {
         User user = repository.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        String role = user.isSeller() ? "SELLER" : "CLIENT";
+        String role = Objects.equals(String.valueOf(user.getUserType()), "SELLER") ?
+                String.valueOf(UserType.SELLER) : String.valueOf(UserType.CLIENT);
 
         return org.springframework.security.core.userdetails.User
                 .builder()

@@ -34,4 +34,7 @@ public class Address {
     @Column(name = "houseNumber")
     private String houseNumber;
 
+    @Column(name = "cep")
+    private String cep;
+
 }

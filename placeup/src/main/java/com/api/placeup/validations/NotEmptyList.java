@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Constraint(validatedBy = NotEmptyListValidator.class)
 public @interface NotEmptyList {
-    String message() default "A lista não pode ser vazia.";
+    String message() default "The list can't be empty.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

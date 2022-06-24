@@ -1,5 +1,6 @@
 package com.api.placeup.rest.dto;
 
+import com.api.placeup.domain.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -56,6 +57,8 @@ public class SellerDTO {
     @NotEmpty(message = "{field.houseNumber.obligatory}")
     private String houseNumber;
 
-    private Boolean seller;
+    @NotEmpty(message = "{field.cep.obligatory}")
+    private String cep;
+
 
 }

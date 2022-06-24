@@ -68,6 +68,7 @@ public class SellerServiceImpl implements SellerService {
         seller.setBlind(dto.getBlind());
         seller.setWheelchair(dto.getWheelchair());
         seller.setDeaf(dto.getDeaf());
+        seller.setUser(user);
 
         sellersRepository.save(seller);
         userService.save(user);

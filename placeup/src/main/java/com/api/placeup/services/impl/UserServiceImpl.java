@@ -21,8 +21,8 @@ public class UserServiceImpl implements UserDetailsService {
     private UserRespository repository;
 
     @Transactional
-    public User save(User usuario){
-        return repository.save(usuario);
+    public User save(User user){
+        return repository.save(user);
     }
 
     public UserDetails authenticate(User user) {
@@ -39,14 +39,13 @@ public class UserServiceImpl implements UserDetailsService {
         User user = repository.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        String[] roles = user.isSeller() ?
-                new String[]{"SELLER"} : new String[]{"CLIENT"};
+        String role = user.isSeller() ? "SELLER" : "CLIENT";
 
         return org.springframework.security.core.userdetails.User
                 .builder()
                 .username(user.getLogin())
                 .password(user.getPassword())
-                .roles(roles)
+                .roles(role)
                 .build();
     }
 

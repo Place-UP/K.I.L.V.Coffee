@@ -65,10 +65,10 @@ public class ClientController {
                         @RequestBody @Valid Client cliente ){
         clients
                 .findById(id)
-                .map( clienteExistente -> {
-                    cliente.setId(clienteExistente.getId());
+                .map( clientExistent -> {
+                    cliente.setId(clientExistent.getId());
                     clients.save(cliente);
-                    return clienteExistente;
+                    return clientExistent;
                 }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Client not found") );
     }

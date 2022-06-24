@@ -8,15 +8,18 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="placeup" />
+        <module name="vendas" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="placeup" target="1.8" />
+      <module name="vendas" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="placeup" options="-parameters" />
+      <module name="vendas" options="-parameters" />
     </option>
   </component>
 </project>

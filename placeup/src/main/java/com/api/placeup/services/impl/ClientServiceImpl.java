@@ -42,6 +42,7 @@ public class ClientServiceImpl implements ClientService {
 
         client.setEmail(dto.getEmail());
         client.setName(dto.getName());
+        client.setUser(user);
 
         repository.save(client);
         userService.save(user);

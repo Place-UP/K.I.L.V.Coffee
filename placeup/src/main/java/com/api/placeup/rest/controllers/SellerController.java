@@ -26,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SellerController {
 
-    private Sellers sellers;
+    private final Sellers sellers;
 
     private final Addresses addresses;
     private final SellerService service;

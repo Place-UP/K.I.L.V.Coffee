@@ -1,9 +1,8 @@
-package com.ms.emailSend.repositories;
+package com.api.placeup.domain.repositories;
 
-import com.ms.emailSend.models.EmailModel;
+import com.api.placeup.domain.entities.Email;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.UUID;
 
-public interface EmailRepository extends JpaRepository<EmailModel, UUID> {
+public interface Emails extends JpaRepository<Email, Integer> {
 }

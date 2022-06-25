@@ -1,10 +1,9 @@
-package com.ms.emailSend.services;
+package com.api.placeup.services.impl;
 
-import com.ms.emailSend.enums.StatusEmail;
-import com.ms.emailSend.models.EmailModel;
-import com.ms.emailSend.repositories.EmailRepository;
+import com.api.placeup.domain.entities.Email;
+import com.api.placeup.domain.enums.StatusEmail;
+import com.api.placeup.domain.repositories.Emails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,11 +15,11 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class EmailService {
 
-    private final EmailRepository repository;
+    private final Emails repository;
 
     private final JavaMailSender mailSender;
 
-    public EmailModel sendEmail(EmailModel email) {
+    public Email sendEmail(Email email) {
         email.setSendDateEmail(LocalDateTime.now());
         try {
             SimpleMailMessage message = new SimpleMailMessage();

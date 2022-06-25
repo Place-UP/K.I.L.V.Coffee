@@ -1,4 +1,4 @@
-package com.ms.emailSend.dtos;
+package com.api.placeup.rest.dto;
 
 import lombok.Data;
 

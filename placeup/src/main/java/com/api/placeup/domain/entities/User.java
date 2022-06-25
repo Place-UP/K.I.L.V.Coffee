@@ -26,7 +26,7 @@ public class User {
     @Column
     @NotEmpty(message = "{field.password.obligatory}")
     private String password;
-    
+
     @Enumerated(EnumType.STRING)
     @Column
     private UserType userType;

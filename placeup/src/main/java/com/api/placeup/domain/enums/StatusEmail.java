@@ -1,4 +1,4 @@
-package com.ms.emailSend.enums;
+package com.api.placeup.domain.enums;
 
 public enum StatusEmail {
     SENT,

@@ -52,6 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/clients/**")
                 .hasAnyRole("SELLER")
 
+                .antMatchers("/sending-email/**")
+                .permitAll()
+
                 .antMatchers("/api/sellers/**")
                 .permitAll()
 

@@ -1,25 +1,20 @@
-package com.ms.emailSend.models;
+package com.api.placeup.domain.entities;
 
-import com.ms.emailSend.enums.StatusEmail;
+import com.api.placeup.domain.enums.StatusEmail;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @Entity
 @Table( name = "tb_email" )
-public class EmailModel implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class Email implements Serializable {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO )
-    private UUID emailId;
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    private Integer emailId;
 
     private String ownerRef;
 

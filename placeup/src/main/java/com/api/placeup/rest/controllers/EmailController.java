@@ -1,13 +1,11 @@
-package com.ms.emailSend.controllers;
+package com.api.placeup.rest.controllers;
 
-import com.ms.emailSend.dtos.EmailDTO;
-import com.ms.emailSend.models.EmailModel;
-import com.ms.emailSend.services.EmailService;
+import com.api.placeup.domain.entities.Email;
+import com.api.placeup.rest.dto.EmailDTO;
+import com.api.placeup.services.impl.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -23,8 +21,8 @@ public class EmailController {
 
     @PostMapping("/sending-email")
     @ResponseStatus( HttpStatus.CREATED )
-    public EmailModel sendingEmail(@RequestBody @Valid EmailDTO dto) {
-        EmailModel email = new EmailModel();
+    public Email sendingEmail(@RequestBody @Valid EmailDTO dto) {
+        Email email = new Email();
         BeanUtils.copyProperties(dto, email);
         service.sendEmail(email);
         return email;

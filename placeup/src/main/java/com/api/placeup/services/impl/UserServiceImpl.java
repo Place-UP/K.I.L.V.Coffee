@@ -2,7 +2,7 @@ package com.api.placeup.services.impl;
 
 import com.api.placeup.domain.entities.User;
 import com.api.placeup.domain.enums.UserType;
-import com.api.placeup.domain.repositories.UserRespository;
+import com.api.placeup.domain.repositories.UserRepository;
 import com.api.placeup.exceptions.InvalidPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EnumType;
 import java.util.Objects;
 
 @Service
@@ -22,7 +21,7 @@ public class UserServiceImpl implements UserDetailsService {
     private PasswordEncoder encoder;
 
     @Autowired
-    private UserRespository repository;
+    private UserRepository repository;
 
     @Transactional
     public User save(User user){

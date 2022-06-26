@@ -49,16 +49,58 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
 
-                .antMatchers("/api/clients/**")
+
+
+                .antMatchers(HttpMethod.POST, "/api/clients")
+                .permitAll()
+
+                .antMatchers(HttpMethod.GET, "/api/clients/**")
                 .hasAnyRole("SELLER")
 
-                .antMatchers("/sending-email/**")
+                .antMatchers(HttpMethod.DELETE, "/api/clients/**")
+                .hasAnyRole("CLIENT")
+
+                .antMatchers(HttpMethod.PUT, "/api/clients/**")
+                .hasAnyRole("CLIENT")
+
+
+
+                .antMatchers("/api/attachment/**")
+                .hasAnyRole("SELLER")
+
+
+
+                .antMatchers("/api/products/**")
+                .hasAnyRole("SELLER")
+
+
+
+                .antMatchers(HttpMethod.POST, "/api/reservation/")
+                .hasAnyRole("CLIENT")
+
+                .antMatchers(HttpMethod.PATCH, "/api/reservation/**")
+                .hasAnyRole("SELLER")
+
+                .antMatchers(HttpMethod.GET, "/api/reservation/")
+                .hasAnyRole("CLIENT", "SELLER")
+
+
+                .antMatchers(HttpMethod.POST, "/api/sellers")
                 .permitAll()
 
-                .antMatchers("/api/sellers/**")
+                .antMatchers(HttpMethod.GET, "/api/sellers/**")
+                .hasAnyRole("SELLER", "CLIENT")
+
+                .antMatchers(HttpMethod.DELETE, "/api/sellers/**")
+                .hasAnyRole("SELLER")
+
+                .antMatchers(HttpMethod.PUT, "/api/sellers/**")
+                .hasAnyRole("SELLER")
+
+                .antMatchers("/api/users/**")
                 .permitAll()
 
-                .antMatchers(HttpMethod.POST, "/api/users/**")
+                .antMatchers("/sending-email")
                 .permitAll()
 
                 .anyRequest().authenticated()

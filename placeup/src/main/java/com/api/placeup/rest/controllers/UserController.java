@@ -7,6 +7,7 @@ import com.api.placeup.rest.dto.TokenDTO;
 import com.api.placeup.security.jwt.JwtService;
 import com.api.placeup.services.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -51,4 +52,5 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
+
 }

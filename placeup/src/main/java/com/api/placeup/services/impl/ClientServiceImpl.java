@@ -4,7 +4,7 @@ import com.api.placeup.domain.entities.Client;
 import com.api.placeup.domain.entities.User;
 import com.api.placeup.domain.enums.UserType;
 import com.api.placeup.domain.repositories.Clients;
-import com.api.placeup.domain.repositories.UserRespository;
+import com.api.placeup.domain.repositories.UserRepository;
 import com.api.placeup.exceptions.BusinessRuleException;
 import com.api.placeup.rest.dto.ClientDTO;
 import com.api.placeup.services.ClientService;
@@ -20,7 +20,7 @@ import java.util.Optional;
 public class ClientServiceImpl implements ClientService {
 
     private final Clients repository;
-    private final UserRespository usersRepository;
+    private final UserRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserServiceImpl userService;
 

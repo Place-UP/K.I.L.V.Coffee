@@ -7,6 +7,7 @@ import com.api.placeup.domain.repositories.Products;
 import com.api.placeup.domain.repositories.Sellers;
 import com.api.placeup.rest.dto.AttachmentDTO;
 import com.api.placeup.services.AttachmentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -21,92 +22,32 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.swing.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/attachments")
 public class AttachmentController {
 
-    private AttachmentService attachmentService;
-    private Products productsRepository;
-    private Sellers sellersRepository;
+    private final AttachmentService service;
 
-    public AttachmentController(AttachmentService attachmentService,
-                                Products productsRepository,
-                                Sellers sellersRepository) {
-        this.attachmentService = attachmentService;
-        this.productsRepository = productsRepository;
-        this.sellersRepository = sellersRepository;
-    }
 
     @PostMapping("/product/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
     public AttachmentDTO uploadProductFile(@RequestParam("file")MultipartFile file, @PathVariable Integer id ) throws Exception {
-        Product product = productsRepository
-                .findById(id)
-                .orElseThrow( () ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Product not found."));
-
-        Attachment attachment = null;
-        String downloadURl = "";
-        attachment = attachmentService.saveAttachment(file);
-        downloadURl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/attachments/")
-                .path(String.valueOf(attachment.getId()))
-                .toUriString();
-
-        product.setId(product.getId());
-        product.setImageLink(downloadURl);
-        productsRepository.save(product);
-
-        return new AttachmentDTO(attachment.getFileName(),
-                downloadURl,
-                file.getContentType(),
-                file.getSize());
+        return service.uploadProductFile(file, id);
     }
 
     @PostMapping("/seller/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
     public AttachmentDTO uploadSellerFile(@RequestParam("file")MultipartFile file, @PathVariable Integer id ) throws Exception {
-        Seller seller = sellersRepository
-                .findById(id)
-                .orElseThrow( () ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Product not found."));
-
-        Attachment attachment = null;
-        String downloadURl = "";
-        attachment = attachmentService.saveAttachment(file);
-        downloadURl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/attachments/")
-                .path(String.valueOf(attachment.getId()))
-                .toUriString();
-
-        seller.setId(seller.getId());
-        seller.setImageLink(downloadURl);
-        sellersRepository.save(seller);
-
-        return new AttachmentDTO(attachment.getFileName(),
-                downloadURl,
-                file.getContentType(),
-                file.getSize());
+        return service.uploadSellerFile(file, id);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Resource> visualizeFile(@PathVariable Integer id) throws Exception {
-        Attachment attachment = null;
-        attachment = attachmentService.getAttachment(id);
-        byte[] data = attachment.getData();
-        return  ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(attachment.getFileType()))
-                .body(new ByteArrayResource(attachment.getData()));
+        return service.visualizeFile(id);
     }
 
     @GetMapping("/download/{id}")
     public ResponseEntity<Resource> downloadFile(@PathVariable Integer id) throws Exception {
-        Attachment attachment = null;
-        attachment = attachmentService.getAttachment(id);
-        return  ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(attachment.getFileType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + attachment.getFileName()
-                                + "\"")
-                .body(new ByteArrayResource(attachment.getData()));
+        return service.downloadFile(id);
     }
 }

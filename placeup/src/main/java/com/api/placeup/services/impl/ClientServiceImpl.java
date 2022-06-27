@@ -1,6 +1,7 @@
 package com.api.placeup.services.impl;
 
 import com.api.placeup.domain.entities.Client;
+import com.api.placeup.domain.entities.Seller;
 import com.api.placeup.domain.entities.User;
 import com.api.placeup.domain.enums.UserType;
 import com.api.placeup.domain.repositories.Clients;
@@ -9,12 +10,19 @@ import com.api.placeup.exceptions.BusinessRuleException;
 import com.api.placeup.rest.dto.ClientDTO;
 import com.api.placeup.services.ClientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -81,7 +89,38 @@ public class ClientServiceImpl implements ClientService {
         return client;
     }
 
+    @Override
+    public Client getClientById(@PathVariable Integer id ){
+        return repository
+                .findById(id)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Client not found."));
+    }
 
+    @Override
+    public List<Client> getClientFind(Client filter ) {
+        ExampleMatcher matcher = ExampleMatcher
+                .matching()
+                .withIgnoreCase()
+                .withStringMatcher( ExampleMatcher.StringMatcher.CONTAINING );
+
+        Example<Client> example = Example.of(filter, matcher);
+        List<Client> list = repository.findAll(example);
+
+        return list;
+    }
+
+    @Override
+    public void delete( @PathVariable Integer id ){
+        repository.findById(id)
+                .map( client -> {
+                    repository.delete(client );
+                    return client;
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Client not found.") );
+    }
 
     private boolean nameAlreadyExists(ClientDTO dto) {
         Optional<Client> client = repository.findByName(dto.getName());

@@ -9,10 +9,19 @@ import com.api.placeup.rest.dto.ProductDTO;
 import com.api.placeup.rest.dto.ProductUpdateDTO;
 import com.api.placeup.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +66,48 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.save(product);
         return product;
+    }
+
+    @Override
+    public void delete(@PathVariable Integer id){
+        productRepository
+                .findById(id)
+                .map( p -> {
+                    productRepository.delete(p);
+                    return Void.TYPE;
+                }).orElseThrow( () ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Product not found."));
+    }
+
+    @Override
+    public Product getById(@PathVariable Integer id){
+        return productRepository
+                .findById(id)
+                .orElseThrow( () ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Product not found."));
+    }
+
+
+    @Override
+    public List<Product> find(Product filter, @RequestParam("order") String order) {
+        ExampleMatcher matcher = ExampleMatcher
+                .matching()
+                .withIgnoreCase()
+                .withStringMatcher( ExampleMatcher.StringMatcher.CONTAINING );
+
+
+        Example<Product> example = Example.of(filter, matcher);
+        List<Product> list = productRepository.findAll(example);
+
+        Comparator<Product> compareByPrice = Comparator.comparing(Product::getPrice);
+
+        if(Objects.equals(order, "ascending")) list.sort(compareByPrice);
+
+        if(Objects.equals(order, "descending")) list.sort(compareByPrice.reversed());
+
+        return list;
     }
 
 }

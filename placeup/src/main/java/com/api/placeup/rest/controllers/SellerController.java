@@ -23,46 +23,28 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/sellers")
 @RequiredArgsConstructor
+@RequestMapping("/api/sellers")
 public class SellerController {
 
-    private final Sellers sellers;
-
-    private final Addresses addresses;
     private final SellerService service;
-    private final UserServiceImpl userService;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
-
 
     @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Seller getSellerById(@PathVariable Integer id ){
-        return sellers
-                .findById(id)
-                .orElseThrow(() ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Seller not found."));
+        return service.getSellerById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Integer save(@RequestBody @Valid SellerDTO dto) {
-            Seller seller = service.save(dto);
-            return seller.getId();
+        return service.save(dto).getId();
     }
-
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete( @PathVariable Integer id ){
-        sellers.findById(id)
-                .map( seller -> {
-                    sellers.delete(seller );
-                    return seller;
-                })
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Seller not found.") );
+        service.delete(id);
     }
 
     @PutMapping("{id}")
@@ -72,15 +54,8 @@ public class SellerController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> find( Seller filter ) {
-        ExampleMatcher matcher = ExampleMatcher
-                .matching()
-                .withIgnoreCase()
-                .withStringMatcher( ExampleMatcher.StringMatcher.CONTAINING );
-
-        Example<Seller> example = Example.of(filter, matcher);
-        List<Seller> list = sellers.findAll(example);
-
-        return ResponseEntity.ok(list);
+    @ResponseStatus(HttpStatus.OK)
+    public List<Seller> find( Seller filter ) {
+        return service.find(filter);
     }
 }

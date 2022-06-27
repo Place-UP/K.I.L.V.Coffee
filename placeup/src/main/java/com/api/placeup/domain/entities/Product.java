@@ -30,6 +30,7 @@ public class Product {
     @Column( name = "image_link")
     private String imageLink;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "seller")
     private Seller seller;

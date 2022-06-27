@@ -10,12 +10,17 @@ import com.api.placeup.exceptions.BusinessRuleException;
 import com.api.placeup.rest.dto.SellerDTO;
 import com.api.placeup.services.SellerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -77,7 +82,6 @@ public class SellerServiceImpl implements SellerService {
 
         return seller;
     }
-
     @Override
     @Transactional
     public Seller update(SellerDTO dto, Integer id) {
@@ -123,7 +127,36 @@ public class SellerServiceImpl implements SellerService {
 
         return seller;
     }
+    @Override
+    public Seller getSellerById(@PathVariable Integer id ){
+        return sellersRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Seller not found."));
+    }
+    @Override
+    public void delete( @PathVariable Integer id ){
+        sellersRepository.findById(id)
+                .map( seller -> {
+                    sellersRepository.delete(seller );
+                    return seller;
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Seller not found.") );
+    }
+    @Override
+    public List<Seller> find(Seller filter ) {
+        ExampleMatcher matcher = ExampleMatcher
+                .matching()
+                .withIgnoreCase()
+                .withStringMatcher( ExampleMatcher.StringMatcher.CONTAINING );
 
+        Example<Seller> example = Example.of(filter, matcher);
+        List<Seller> list = sellersRepository.findAll(example);
+
+        return list;
+    }
 
     private boolean cnpjAlreadyExists(SellerDTO dto) {
         Optional<Seller> seller = sellersRepository.findByCnpj(dto.getCnpj());

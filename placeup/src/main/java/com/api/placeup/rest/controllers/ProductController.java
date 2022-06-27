@@ -9,6 +9,7 @@ import com.api.placeup.rest.dto.ProductDTO;
 import com.api.placeup.rest.dto.ProductUpdateDTO;
 import com.api.placeup.rest.dto.ReservationDTO;
 import com.api.placeup.services.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
@@ -25,22 +26,16 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private ProductService service;
-    private Products repository;
-
-    public ProductController(ProductService service, Products repository) {
-        this.service = service;
-        this.repository = repository;
-    }
+    private final ProductService service;
 
     @PostMapping
     @ResponseStatus(CREATED)
     public Integer save( @RequestBody @Valid ProductDTO dto ){
-        Product product = service.save(dto);
-        return product.getId();
+        return service.save(dto).getId();
     }
 
     @PutMapping("{id}")
@@ -52,42 +47,18 @@ public class ProductController {
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     public void delete(@PathVariable Integer id){
-        repository
-                .findById(id)
-                .map( p -> {
-                    repository.delete(p);
-                    return Void.TYPE;
-                }).orElseThrow( () ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Product not found."));
+        service.delete(id);
     }
 
     @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Product getById(@PathVariable Integer id){
-        return repository
-                .findById(id)
-                .orElseThrow( () ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Product not found."));
+        return service.getById(id);
     }
 
     @GetMapping
-    public ResponseEntity<Object> find( Product filter, @RequestParam("order") String order) {
-        ExampleMatcher matcher = ExampleMatcher
-                .matching()
-                .withIgnoreCase()
-                .withStringMatcher( ExampleMatcher.StringMatcher.CONTAINING );
-
-
-        Example<Product> example = Example.of(filter, matcher);
-        List<Product> list = repository.findAll(example);
-
-        Comparator<Product> compareByPrice = Comparator.comparing(Product::getPrice);
-
-        if(Objects.equals(order, "ascending")) list.sort(compareByPrice);
-
-        if(Objects.equals(order, "descending")) list.sort(compareByPrice.reversed());
-
-        return ResponseEntity.ok(list);
+    @ResponseStatus(HttpStatus.OK)
+    public List<Product> find( Product filter, @RequestParam("order") String order) {
+        return service.find(filter, order);
     }
 }

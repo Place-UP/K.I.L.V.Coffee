@@ -1,10 +1,12 @@
 package com.api.placeup.rest.controllers;
 
 import com.api.placeup.domain.entities.Client;
+import com.api.placeup.domain.entities.Seller;
 import com.api.placeup.domain.repositories.Clients;
 import com.api.placeup.rest.dto.ClientDTO;
 import com.api.placeup.security.jwt.JwtService;
 import com.api.placeup.services.ClientService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
@@ -18,23 +20,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/clients")
+@RequiredArgsConstructor
 public class ClientController {
 
-    private Clients clients;
-    private ClientService service;
-
-    public ClientController( Clients clients, ClientService service) {
-        this.service = service;
-        this.clients = clients;
-    }
+    private final ClientService service;
 
     @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Client getClientById(@PathVariable Integer id ){
-        return clients
-                .findById(id)
-                .orElseThrow(() ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Client not found."));
+        return service.getClientById(id);
     }
 
     @PostMapping
@@ -44,19 +38,10 @@ public class ClientController {
         return client.getId();
     }
 
-
-
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete( @PathVariable Integer id ){
-        clients.findById(id)
-                .map( client -> {
-                    clients.delete(client );
-                    return client;
-                })
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Client not found.") );
-
+        service.delete(id);
     }
 
     @PutMapping("{id}")
@@ -66,15 +51,9 @@ public class ClientController {
     }
 
     @GetMapping
-    public List<Client> find(Client filter ){
-        ExampleMatcher matcher = ExampleMatcher
-                .matching()
-                .withIgnoreCase()
-                .withStringMatcher(
-                        ExampleMatcher.StringMatcher.CONTAINING );
-
-        Example example = Example.of(filter, matcher);
-        return clients.findAll(example);
+    @ResponseStatus(HttpStatus.OK)
+    public List<Client> getClientFind( Client filter ) {
+        return service.getClientFind(filter);
     }
 
 }

@@ -19,7 +19,7 @@ public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "client_id")
     private Integer id;
 
     @Column(name = "name", length = 100)
@@ -30,8 +30,7 @@ public class Client {
 
     @Column(name = "phone",  length = 11)
     private String phone;
-
-    @JsonIgnore
+    
     @OneToMany( mappedBy = "client" , fetch = FetchType.LAZY )
     private Set<Reservation> reservations;
 

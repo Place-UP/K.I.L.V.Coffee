@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface SellerService {
     Seller save (SellerDTO dto);
+    Seller update (SellerDTO dto, Integer id);
     Optional<Seller> getCompleteSeller(Integer id);
 }

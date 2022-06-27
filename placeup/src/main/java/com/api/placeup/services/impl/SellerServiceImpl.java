@@ -8,12 +8,13 @@ import com.api.placeup.domain.repositories.Addresses;
 import com.api.placeup.domain.repositories.Sellers;
 import com.api.placeup.exceptions.BusinessRuleException;
 import com.api.placeup.rest.dto.SellerDTO;
-import com.api.placeup.security.jwt.JwtService;
 import com.api.placeup.services.SellerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -76,6 +77,53 @@ public class SellerServiceImpl implements SellerService {
 
         return seller;
     }
+
+    @Override
+    @Transactional
+    public Seller update(SellerDTO dto, Integer id) {
+        Seller seller = sellersRepository.findById(id)
+                .map( existentSeller -> {
+                    dto.setSellerId(existentSeller.getId());
+                    dto.setEmail(existentSeller.getEmail());
+                    dto.setCnpj(existentSeller.getCnpj());
+                    dto.setAddress(existentSeller.getAddress().getId());
+                    dto.setUser(existentSeller.getUser());
+                    return existentSeller;
+                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Seller not found") );
+
+        Address address = new Address();
+
+
+        User user = dto.getUser();
+
+        address.setId(dto.getAddress());
+        address.setState(dto.getState());
+        address.setCity(dto.getCity());
+        address.setDistrict(dto.getDistrict());
+        address.setStreet(dto.getStreet());
+        address.setHouseNumber(dto.getHouseNumber());
+        address.setCep(dto.getCep());
+        // addressRepository.save(address);
+
+
+        seller.setAddress(address);
+        seller.setName(dto.getName());
+        seller.setEmail(dto.getEmail());
+        seller.setCnpj(dto.getCnpj());
+        seller.setPhone(dto.getPhone());
+        seller.setMute(dto.getMute());
+        seller.setBlind(dto.getBlind());
+        seller.setWheelchair(dto.getWheelchair());
+        seller.setDeaf(dto.getDeaf());
+        seller.setUser(user);
+
+        sellersRepository.save(seller);
+        userService.save(user);
+
+        return seller;
+    }
+
 
     private boolean cnpjAlreadyExists(SellerDTO dto) {
         Optional<Seller> seller = sellersRepository.findByCnpj(dto.getCnpj());

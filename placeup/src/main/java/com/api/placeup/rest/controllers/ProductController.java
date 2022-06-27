@@ -6,6 +6,7 @@ import com.api.placeup.domain.entities.Seller;
 import com.api.placeup.domain.repositories.Products;
 import com.api.placeup.domain.repositories.Sellers;
 import com.api.placeup.rest.dto.ProductDTO;
+import com.api.placeup.rest.dto.ProductUpdateDTO;
 import com.api.placeup.rest.dto.ReservationDTO;
 import com.api.placeup.services.ProductService;
 import org.springframework.data.domain.Example;
@@ -44,16 +45,8 @@ public class ProductController {
 
     @PutMapping("{id}")
     @ResponseStatus(NO_CONTENT)
-    public void update( @PathVariable Integer id, @RequestBody @Valid Product product ){
-        repository
-                .findById(id)
-                .map( p -> {
-                    product.setId(p.getId());
-                    repository.save(product);
-                    return product;
-                }).orElseThrow( () ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Product not found."));
+    public void update(@PathVariable Integer id, @RequestBody @Valid ProductUpdateDTO dto ){
+        service.update(dto, id);
     }
 
     @DeleteMapping("{id}")

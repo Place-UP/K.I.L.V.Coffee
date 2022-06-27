@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/sellers")
@@ -66,16 +67,8 @@ public class SellerController {
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update( @PathVariable Integer id,
-                        @RequestBody @Valid Seller seller){
-        sellers
-                .findById(id)
-                .map( sellerExistent -> {
-                    seller.setId(sellerExistent.getId());
-                    sellers.save(seller);
-                    return sellerExistent;
-                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Seller not found") );
+    public void update( @PathVariable Integer id, @RequestBody @Valid SellerDTO dto){
+        service.update(dto, id);
     }
 
     @GetMapping

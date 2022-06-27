@@ -58,7 +58,8 @@ public class ReservationController {
         return InformationReservationDTO
                 .builder()
                 .code(reservation.getId())
-                .dateReservation(reservation.getReservationDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
+                .dateReservation(reservation.getReservationDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                .withdrawalDate(reservation.getWithdrawalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .email(reservation.getClient().getEmail())
                 .nameClient(reservation.getClient().getName())
                 .total(reservation.getTotal())

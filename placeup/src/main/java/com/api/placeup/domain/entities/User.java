@@ -1,6 +1,7 @@
 package com.api.placeup.domain.entities;
 
 import com.api.placeup.domain.enums.UserType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,8 @@ public class User {
     @Column
     @NotEmpty(message = "{field.login.obligatory}")
     private String login;
+
+    @JsonIgnore
     @Column
     @NotEmpty(message = "{field.password.obligatory}")
     private String password;

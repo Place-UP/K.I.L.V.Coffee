@@ -9,9 +9,11 @@ import com.api.placeup.exceptions.BusinessRuleException;
 import com.api.placeup.rest.dto.ClientDTO;
 import com.api.placeup.services.ClientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -44,6 +46,33 @@ public class ClientServiceImpl implements ClientService {
 
         client.setEmail(dto.getEmail());
         client.setName(dto.getName());
+        client.setPhone(dto.getPhone());
+        client.setUser(user);
+
+        repository.save(client);
+        userService.save(user);
+
+        return client;
+    }
+
+    @Override
+    @Transactional
+    public Client update(ClientDTO dto, Integer id) {
+
+        Client client = repository.findById(id)
+                .map( clientExistent -> {
+                    dto.setClient(clientExistent.getId());
+                    dto.setEmail(clientExistent.getEmail());
+                    dto.setUser(clientExistent.getUser());
+                    return clientExistent;
+                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Client not found") );
+
+        User user = dto.getUser();
+
+        client.setEmail(dto.getEmail());
+        client.setName(dto.getName());
+        client.setPhone(dto.getPhone());
         client.setUser(user);
 
         repository.save(client);

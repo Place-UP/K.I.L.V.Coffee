@@ -61,16 +61,8 @@ public class ClientController {
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update( @PathVariable Integer id,
-                        @RequestBody @Valid Client cliente ){
-        clients
-                .findById(id)
-                .map( clientExistent -> {
-                    cliente.setId(clientExistent.getId());
-                    clients.save(cliente);
-                    return clientExistent;
-                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Client not found") );
+    public void update( @PathVariable Integer id, @RequestBody @Valid ClientDTO dto ){
+        service.update(dto, id);
     }
 
     @GetMapping

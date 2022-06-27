@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -27,7 +28,10 @@ public class Reservation {
     private Client client;
 
     @Column(name = "reservation_date")
-    private LocalDate reservationDate;
+    private LocalDateTime reservationDate;
+
+    @Column(name = "withdrawal_date")
+    private LocalDateTime withdrawalDate;
 
     @Column(name = "total", precision = 20, scale = 2)
     private BigDecimal total;

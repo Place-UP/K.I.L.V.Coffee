@@ -1,5 +1,6 @@
 package com.api.placeup.rest.dto;
 
+import com.api.placeup.domain.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,11 @@ public class ClientDTO {
     @Email(message = "{input.email.valid}")
     private String email;
 
+    @NotEmpty(message = "{field.phone.obligatory}")
+    private String phone;
+
     @NotEmpty(message = "{field.password.obligatory}")
     private String password;
+
+    private User user;
 }

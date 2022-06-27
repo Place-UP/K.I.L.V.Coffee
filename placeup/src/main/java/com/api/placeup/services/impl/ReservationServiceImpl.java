@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,7 +48,8 @@ public class ReservationServiceImpl implements ReservationService {
 
         Reservation reservation = new Reservation();
         reservation.setTotal(total);
-        reservation.setReservationDate(LocalDate.now());
+        reservation.setReservationDate(LocalDateTime.now());
+        reservation.setWithdrawalDate(dto.getWithdrawalDate());
         reservation.setClient(client);
         reservation.setSeller(seller);
         reservation.setStatus(ReservationStatus.PENDING);

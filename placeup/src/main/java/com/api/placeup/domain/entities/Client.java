@@ -28,6 +28,9 @@ public class Client {
     @Column(name = "email", length = 100)
     private String email;
 
+    @Column(name = "phone",  length = 11)
+    private String phone;
+
     @JsonIgnore
     @OneToMany( mappedBy = "client" , fetch = FetchType.LAZY )
     private Set<Reservation> reservations;

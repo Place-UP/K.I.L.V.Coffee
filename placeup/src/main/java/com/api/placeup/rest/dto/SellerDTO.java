@@ -1,5 +1,6 @@
 package com.api.placeup.rest.dto;
 
+import com.api.placeup.domain.entities.User;
 import com.api.placeup.domain.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -60,5 +61,6 @@ public class SellerDTO {
     @NotEmpty(message = "{field.cep.obligatory}")
     private String cep;
 
+    private User user;
 
 }

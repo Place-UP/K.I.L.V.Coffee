@@ -7,6 +7,8 @@ import com.api.placeup.domain.enums.UserType;
 import com.api.placeup.domain.repositories.Clients;
 import com.api.placeup.domain.repositories.UserRepository;
 import com.api.placeup.exceptions.BusinessRuleException;
+import com.api.placeup.rest.controllers.ReservationController;
+import com.api.placeup.rest.controllers.SellerController;
 import com.api.placeup.rest.dto.ClientDTO;
 import com.api.placeup.services.ClientService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 @RequiredArgsConstructor
@@ -96,6 +101,7 @@ public class ClientServiceImpl implements ClientService {
                 .orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
                                 "Client not found."));
+
     }
 
     @Override

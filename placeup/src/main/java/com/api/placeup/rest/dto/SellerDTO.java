@@ -63,4 +63,5 @@ public class SellerDTO {
 
     private User user;
 
+    private String productLink;
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CNPJ;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -16,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table( name = "seller" )
-public class Seller {
+public class Seller extends RepresentationModel<Seller> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +51,7 @@ public class Seller {
     @Column( name = "image_link")
     private String imageLink;
 
+    @JsonIgnore
     @OneToMany( mappedBy = "seller" )
     private Set<Product> products;
 
@@ -61,6 +63,7 @@ public class Seller {
     @OneToMany( mappedBy = "seller" , fetch = FetchType.LAZY )
     private Set<Reservation> reservations;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "login")
     private User user;

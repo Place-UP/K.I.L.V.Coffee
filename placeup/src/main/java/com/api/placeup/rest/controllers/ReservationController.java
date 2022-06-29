@@ -1,5 +1,6 @@
 package com.api.placeup.rest.controllers;
 
+import com.api.placeup.domain.entities.Product;
 import com.api.placeup.domain.entities.Reservation;
 import com.api.placeup.domain.entities.ReservationItem;
 import com.api.placeup.domain.enums.ReservationStatus;
@@ -47,5 +48,4 @@ public class ReservationController {
     public void updateStatus(@PathVariable Integer id , @RequestBody UpdateStatusReservationDTO dto){
         service.updateStatus(id, ReservationStatus.valueOf(dto.getNewStatus()));
     }
-
 }

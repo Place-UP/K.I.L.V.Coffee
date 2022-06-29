@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/clients")
@@ -30,30 +31,25 @@ public class ClientController {
     public Client getClientById(@PathVariable Integer id ){
         return service.getClientById(id);
     }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Integer save(@RequestBody @Valid ClientDTO dto ){
         Client client = service.save(dto);
         return client.getId();
     }
-
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete( @PathVariable Integer id ){
         service.delete(id);
     }
-
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update( @PathVariable Integer id, @RequestBody @Valid ClientDTO dto ){
         service.update(dto, id);
     }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Client> getClientFind( Client filter ) {
         return service.getClientFind(filter);
     }
-
 }

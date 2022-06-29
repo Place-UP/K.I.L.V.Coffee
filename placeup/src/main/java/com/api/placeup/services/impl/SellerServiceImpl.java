@@ -1,12 +1,15 @@
 package com.api.placeup.services.impl;
 
 import com.api.placeup.domain.entities.Address;
+import com.api.placeup.domain.entities.Product;
 import com.api.placeup.domain.entities.Seller;
 import com.api.placeup.domain.entities.User;
 import com.api.placeup.domain.enums.UserType;
 import com.api.placeup.domain.repositories.Addresses;
 import com.api.placeup.domain.repositories.Sellers;
 import com.api.placeup.exceptions.BusinessRuleException;
+import com.api.placeup.rest.controllers.ProductController;
+import com.api.placeup.rest.controllers.SellerController;
 import com.api.placeup.rest.dto.SellerDTO;
 import com.api.placeup.services.SellerService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 @RequiredArgsConstructor
@@ -107,8 +113,6 @@ public class SellerServiceImpl implements SellerService {
         address.setStreet(dto.getStreet());
         address.setHouseNumber(dto.getHouseNumber());
         address.setCep(dto.getCep());
-        // addressRepository.save(address);
-
 
         seller.setAddress(address);
         seller.setName(dto.getName());
@@ -119,7 +123,10 @@ public class SellerServiceImpl implements SellerService {
         seller.setBlind(dto.getBlind());
         seller.setWheelchair(dto.getWheelchair());
         seller.setDeaf(dto.getDeaf());
+
         seller.setUser(user);
+
+
 
         sellersRepository.save(seller);
         userService.save(user);
@@ -128,11 +135,15 @@ public class SellerServiceImpl implements SellerService {
     }
     @Override
     public Seller getSellerById(@PathVariable Integer id ){
-        return sellersRepository
+        Seller seller = sellersRepository
                 .findById(id)
                 .orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
                                 "Seller not found."));
+
+        seller.add(linkTo(methodOn(ProductController.class).getBySeller(id)).withRel("Products link: "));
+
+        return seller;
     }
     @Override
     public void delete( @PathVariable Integer id ){
@@ -156,27 +167,22 @@ public class SellerServiceImpl implements SellerService {
 
         return list;
     }
-
     private boolean cnpjAlreadyExists(SellerDTO dto) {
         Optional<Seller> seller = sellersRepository.findByCnpj(dto.getCnpj());
         return seller.isPresent();
     }
-
     private boolean emailAlreadyExists(SellerDTO dto) {
         Optional<Seller> seller = sellersRepository.findByEmail(dto.getEmail());
         return seller.isPresent();
     }
-
     private boolean phoneAlreadyExists(SellerDTO dto) {
         Optional<Seller> seller = sellersRepository.findByPhone(dto.getPhone());
         return seller.isPresent();
     }
-
     private boolean nameAlreadyExists(SellerDTO dto) {
         Optional<Seller> seller = sellersRepository.findByName(dto.getName());
         return seller.isPresent();
     }
-
     @Override
     public Optional<Seller> getCompleteSeller(Integer id){
         return sellersRepository.findByIdFetchAddress(id);

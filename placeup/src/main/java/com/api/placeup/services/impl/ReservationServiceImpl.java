@@ -5,6 +5,9 @@ import com.api.placeup.domain.enums.ReservationStatus;
 import com.api.placeup.domain.repositories.*;
 import com.api.placeup.exceptions.BusinessRuleException;
 import com.api.placeup.exceptions.ReservationNotFoundException;
+import com.api.placeup.rest.controllers.ClientController;
+import com.api.placeup.rest.controllers.ReservationController;
+import com.api.placeup.rest.controllers.SellerController;
 import com.api.placeup.rest.dto.InformationItemReservationDTO;
 import com.api.placeup.rest.dto.InformationReservationDTO;
 import com.api.placeup.rest.dto.ReservationDTO;
@@ -29,6 +32,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
@@ -72,12 +77,10 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setItems(reservationItem);
         return reservation;
     }
-
     @Override
     public Optional<Reservation> getCompleteReservation(Integer id) {
         return repository.findByIdFetchItems(id);
     }
-
     @Override
     public InformationReservationDTO getById(Integer id) {
         return getCompleteReservation(id)
@@ -85,8 +88,6 @@ public class ReservationServiceImpl implements ReservationService {
                     .orElseThrow(() ->
                             new ResponseStatusException(NOT_FOUND, "Reservation not found."));
     }
-
-
     @Override
     @Transactional
     public void updateStatus( Integer id, ReservationStatus reservationStatus ) {
@@ -97,7 +98,6 @@ public class ReservationServiceImpl implements ReservationService {
                     return repository.save(reservation);
                 }).orElseThrow(() -> new ReservationNotFoundException() );
     }
-
     private List<ReservationItem> convertItems(Reservation reservation, List<ReservationItemDTO> items){
         if(items.isEmpty()){
             throw new BusinessRuleException("Não é possível realizar um pedido sem items.");
@@ -121,7 +121,6 @@ public class ReservationServiceImpl implements ReservationService {
                     return reservationItem;
                 }).collect(Collectors.toList());
     }
-
     private List<BigDecimal> getProductPrice(List<ReservationItemDTO> items) {
         return items
                 .stream()
@@ -138,7 +137,6 @@ public class ReservationServiceImpl implements ReservationService {
                     return product.getPrice().multiply(quantity);
                 }).collect(Collectors.toList());
     }
-
     private BigDecimal totalCalculation(List<BigDecimal> prices) {
         BigDecimal total = BigDecimal.valueOf(0.00);
         for(BigDecimal price : prices) {
@@ -146,7 +144,6 @@ public class ReservationServiceImpl implements ReservationService {
         }
         return total;
     }
-
     private InformationReservationDTO convert(Reservation reservation){
         return InformationReservationDTO
                 .builder()
@@ -161,7 +158,6 @@ public class ReservationServiceImpl implements ReservationService {
                 .items(converter(reservation.getItems()))
                 .build();
     }
-
     private List<InformationItemReservationDTO> converter(List<ReservationItem> items){
         if(CollectionUtils.isEmpty(items)){
             return Collections.emptyList();

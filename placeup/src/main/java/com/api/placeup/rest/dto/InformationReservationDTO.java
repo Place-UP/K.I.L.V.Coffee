@@ -1,9 +1,11 @@
 package com.api.placeup.rest.dto;
 
+import com.api.placeup.domain.entities.Client;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

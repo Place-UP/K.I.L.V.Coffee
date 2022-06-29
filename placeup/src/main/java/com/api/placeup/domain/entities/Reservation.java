@@ -1,9 +1,11 @@
 package com.api.placeup.domain.entities;
 
 import com.api.placeup.domain.enums.ReservationStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -16,13 +18,14 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "reservation")
-public class Reservation {
+public class Reservation extends RepresentationModel<Reservation> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
@@ -43,6 +46,7 @@ public class Reservation {
     @OneToMany(mappedBy = "reservation")
     private List<ReservationItem> items;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private Seller seller;

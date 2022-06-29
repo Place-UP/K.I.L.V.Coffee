@@ -6,6 +6,7 @@ import com.api.placeup.rest.dto.InformationReservationDTO;
 import com.api.placeup.rest.dto.ReservationDTO;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ReservationService {

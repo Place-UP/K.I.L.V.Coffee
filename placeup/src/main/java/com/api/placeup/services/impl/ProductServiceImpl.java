@@ -5,6 +5,7 @@ import com.api.placeup.domain.entities.Seller;
 import com.api.placeup.domain.repositories.Products;
 import com.api.placeup.domain.repositories.Sellers;
 import com.api.placeup.exceptions.BusinessRuleException;
+import com.api.placeup.rest.controllers.SellerController;
 import com.api.placeup.rest.dto.ProductDTO;
 import com.api.placeup.rest.dto.ProductUpdateDTO;
 import com.api.placeup.services.ProductService;
@@ -12,10 +13,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 
 import java.util.Comparator;
 import java.util.List;
@@ -46,7 +51,6 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
         return product;
     }
-
     @Override
     @Transactional
     public Product update(ProductUpdateDTO dto, Integer id){
@@ -67,7 +71,6 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
         return product;
     }
-
     @Override
     public void delete(Integer id){
         productRepository
@@ -79,7 +82,6 @@ public class ProductServiceImpl implements ProductService {
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
                                 "Product not found."));
     }
-
     @Override
     public Product getById(Integer id){
         return productRepository
@@ -88,12 +90,18 @@ public class ProductServiceImpl implements ProductService {
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
                                 "Product not found."));
     }
-
-
     @Override
     public List<Product> getBySeller(Integer id) {
-        return productRepository
-                .findBySeller(id);
+        List<Product> productList = productRepository.findBySeller(id);
+        if (productList.isEmpty()){
+            return null;
+        } else{
+            for (Product product: productList){
+                product.add(linkTo(methodOn(SellerController.class).getSellerById(id)).withRel("Seller link"));
+            }
+        }
+
+        return productList;
     }
 
 

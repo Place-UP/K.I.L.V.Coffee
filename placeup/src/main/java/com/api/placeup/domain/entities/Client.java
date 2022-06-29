@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -15,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table( name = "client" )
-public class Client {
+public class Client extends RepresentationModel<Client> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

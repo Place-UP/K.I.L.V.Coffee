@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 
 @Data
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Entity
 @Table( name = "products" )
-public class Product {
+public class Product extends RepresentationModel<Product>{
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)

@@ -52,65 +52,64 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
 
-//                .antMatchers(HttpMethod.POST, "/api/clients")
-//                .permitAll()
-//
-//                .antMatchers(HttpMethod.GET, "/api/clients/**")
-//                .hasAnyRole("SELLER")
-//
-//                .antMatchers(HttpMethod.DELETE, "/api/clients/**")
-//                .hasAnyRole("CLIENT")
-//
-//                .antMatchers(HttpMethod.PUT, "/api/clients/**")
-//                .hasAnyRole("CLIENT")
-//
-//                .antMatchers("/api/attachment/**")
-//                .hasAnyRole("SELLER")
-//
-//                .antMatchers(HttpMethod.POST, "/api/products/**")
-//                .hasAnyRole("SELLER")
-//
-//                .antMatchers(HttpMethod.PUT, "/api/products/**")
-//                .hasAnyRole("SELLER")
-//
-//                .antMatchers(HttpMethod.DELETE, "/api/products/**")
-//                .hasAnyRole("SELLER")
-//
-//                .antMatchers(HttpMethod.GET, "/api/products/**")
-//                .hasAnyRole("SELLER", "CLIENT")
-//
-//                .antMatchers(HttpMethod.POST, "/api/reservation/")
-//                .hasAnyRole("CLIENT")
-//
-//                .antMatchers(HttpMethod.PATCH, "/api/reservation/**")
-//                .hasAnyRole("SELLER")
-//
-//                .antMatchers(HttpMethod.GET, "/api/reservation/")
-//                .hasAnyRole("CLIENT", "SELLER")
-//
-//                .antMatchers(HttpMethod.POST, "/api/sellers")
-//                .permitAll()
-//
-//                .antMatchers(HttpMethod.GET, "/api/sellers/**")
-//                .hasAnyRole("SELLER", "CLIENT")
-//
-//                .antMatchers(HttpMethod.DELETE, "/api/sellers/**")
-//                .hasAnyRole("SELLER")
-//
-//                .antMatchers(HttpMethod.PUT, "/api/sellers/**")
-//                .hasAnyRole("SELLER")
-//
-//                .antMatchers("/api/users/**")
-//                .permitAll()
-//
-//                .antMatchers("/sending-email")
-//                .permitAll()
-//
-//                .antMatchers("swagger-ui.html#/")
-//                .permitAll()
+                .antMatchers(HttpMethod.POST, "/api/clients")
+                .permitAll()
 
-                .anyRequest().permitAll()
-//                .anyRequest().authenticated()
+                .antMatchers(HttpMethod.GET, "/api/clients/**")
+                .hasAnyRole("SELLER")
+
+                .antMatchers(HttpMethod.DELETE, "/api/clients/**")
+                .hasAnyRole("CLIENT")
+
+                .antMatchers(HttpMethod.PUT, "/api/clients/**")
+                .hasAnyRole("CLIENT")
+
+                .antMatchers("/api/attachment/**")
+                .hasAnyRole("SELLER")
+
+                .antMatchers(HttpMethod.POST, "/api/products/**")
+                .hasAnyRole("SELLER")
+
+                .antMatchers(HttpMethod.PUT, "/api/products/**")
+                .hasAnyRole("SELLER")
+
+                .antMatchers(HttpMethod.DELETE, "/api/products/**")
+                .hasAnyRole("SELLER")
+
+                .antMatchers(HttpMethod.GET, "/api/products/**")
+                .hasAnyRole("SELLER", "CLIENT")
+
+                .antMatchers(HttpMethod.POST, "/api/reservation/")
+                .hasAnyRole("CLIENT")
+
+                .antMatchers(HttpMethod.PATCH, "/api/reservation/**")
+                .hasAnyRole("SELLER")
+
+                .antMatchers(HttpMethod.GET, "/api/reservation/")
+                .hasAnyRole("CLIENT", "SELLER")
+
+                .antMatchers(HttpMethod.POST, "/api/sellers")
+                .permitAll()
+
+                .antMatchers(HttpMethod.GET, "/api/sellers/**")
+                .hasAnyRole("SELLER", "CLIENT")
+
+                .antMatchers(HttpMethod.DELETE, "/api/sellers/**")
+                .hasAnyRole("SELLER")
+
+                .antMatchers(HttpMethod.PUT, "/api/sellers/**")
+                .hasAnyRole("SELLER")
+
+                .antMatchers("/api/users/**")
+                .permitAll()
+
+                .antMatchers("/sending-email")
+                .permitAll()
+
+                .antMatchers("swagger-ui.html#/")
+                .permitAll()
+
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

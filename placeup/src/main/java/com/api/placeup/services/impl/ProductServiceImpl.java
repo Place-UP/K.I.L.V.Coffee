@@ -84,11 +84,16 @@ public class ProductServiceImpl implements ProductService {
     }
     @Override
     public Product getById(Integer id){
-        return productRepository
+        Product product = productRepository
                 .findById(id)
                 .orElseThrow( () ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
                                 "Product not found."));
+
+        product.add(linkTo(methodOn(SellerController.class).getSellerById(id)).withRel("Seller link"));
+
+        return product;
+
     }
     @Override
     public List<Product> getBySeller(Integer id) {
@@ -118,6 +123,11 @@ public class ProductServiceImpl implements ProductService {
         List<Product> list = productRepository.findAll(example);
 
         Comparator<Product> compareByPrice = Comparator.comparing(Product::getPrice);
+
+        for(Product product : list) {
+            product.add(linkTo(methodOn(SellerController.class)
+                    .getSellerById(product.getSeller().getId())).withRel("Seller link"));
+        }
 
         if(Objects.equals(order, "ascending")) list.sort(compareByPrice);
 

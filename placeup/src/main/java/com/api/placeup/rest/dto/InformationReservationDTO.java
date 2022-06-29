@@ -1,6 +1,7 @@
 package com.api.placeup.rest.dto;
 
 import com.api.placeup.domain.entities.Client;
+import com.api.placeup.domain.entities.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class InformationReservationDTO {
+public class InformationReservationDTO extends RepresentationModel<Product>{
     private Integer code;
     private String email;
     private String nameClient;

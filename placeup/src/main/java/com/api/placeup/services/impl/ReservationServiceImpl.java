@@ -27,9 +27,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -81,13 +79,66 @@ public class ReservationServiceImpl implements ReservationService {
     public Optional<Reservation> getCompleteReservation(Integer id) {
         return repository.findByIdFetchItems(id);
     }
+
     @Override
     public InformationReservationDTO getById(Integer id) {
-        return getCompleteReservation(id)
+        InformationReservationDTO reservation = getCompleteReservation(id)
                     .map( p -> convert(p) )
                     .orElseThrow(() ->
                             new ResponseStatusException(NOT_FOUND, "Reservation not found."));
+
+        reservation.add(linkTo(methodOn(SellerController.class).getSellerById(id)).withRel("Seller link"));
+        reservation.add(linkTo(methodOn(ClientController.class).getClientById(id)).withRel("Client link"));
+
+        return reservation;
     }
+
+
+
+    @Override
+    public List<InformationReservationDTO> getBySeller(Integer id) {
+        List<InformationReservationDTO> list = new ArrayList<>();
+        for (Reservation reservation : repository.findBySeller(id)) {
+            InformationReservationDTO reservationDTO = getCompleteReservation(reservation.getId())
+                    .map(p -> convert(p))
+                    .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Reservation not found."));
+
+            reservationDTO.add(linkTo(methodOn(ReservationController.class).getById(reservationDTO.getCode())).withSelfRel());
+            reservationDTO.add(linkTo(methodOn(SellerController.class).getSellerById(id)).withRel("Seller link"));
+            reservationDTO.add(linkTo(methodOn(ClientController.class).getClientById(id)).withRel("Client link"));
+
+            list.add(reservationDTO);
+        }
+
+        return list;
+    }
+
+
+
+    @Override
+    public List<InformationReservationDTO> getByClient(Integer id) {
+        List<Reservation> reservationsList = repository.findByClient(id);
+
+        List<InformationReservationDTO> list = new ArrayList<>();
+        for (Reservation reservation : repository.findByClient(id)) {
+            InformationReservationDTO reservationDTO = getCompleteReservation(reservation.getId())
+                    .map(p -> convert(p))
+                    .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Reservation not found."));
+
+            reservationDTO.add(linkTo(methodOn(ReservationController.class).getById(reservationDTO.getCode())).withSelfRel());
+            reservationDTO.add(linkTo(methodOn(SellerController.class).getSellerById(id)).withRel("Seller link"));
+            reservationDTO.add(linkTo(methodOn(ClientController.class).getClientById(id)).withRel("Client link"));
+
+            list.add(reservationDTO);
+        }
+
+        return list;
+    }
+
+
+
+
+
     @Override
     @Transactional
     public void updateStatus( Integer id, ReservationStatus reservationStatus ) {

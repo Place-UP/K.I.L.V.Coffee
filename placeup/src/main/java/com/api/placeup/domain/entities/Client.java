@@ -31,10 +31,12 @@ public class Client extends RepresentationModel<Client> {
 
     @Column(name = "phone",  length = 11)
     private String phone;
-    
+
+    @JsonIgnore
     @OneToMany( mappedBy = "client" , fetch = FetchType.LAZY )
     private Set<Reservation> reservations;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "login")
     private User user;

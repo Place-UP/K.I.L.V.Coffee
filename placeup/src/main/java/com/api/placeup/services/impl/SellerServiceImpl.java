@@ -9,6 +9,7 @@ import com.api.placeup.domain.repositories.Addresses;
 import com.api.placeup.domain.repositories.Sellers;
 import com.api.placeup.exceptions.BusinessRuleException;
 import com.api.placeup.rest.controllers.ProductController;
+import com.api.placeup.rest.controllers.ReservationController;
 import com.api.placeup.rest.controllers.SellerController;
 import com.api.placeup.rest.dto.SellerDTO;
 import com.api.placeup.services.SellerService;
@@ -141,7 +142,8 @@ public class SellerServiceImpl implements SellerService {
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
                                 "Seller not found."));
 
-        seller.add(linkTo(methodOn(ProductController.class).getBySeller(id)).withRel("Products link: "));
+        seller.add(linkTo(methodOn(ReservationController.class).getBySeller(id)).withRel("Reservations link"));
+        seller.add(linkTo(methodOn(ProductController.class).getBySeller(id)).withRel("Products link"));
 
         return seller;
     }
@@ -165,8 +167,18 @@ public class SellerServiceImpl implements SellerService {
         Example<Seller> example = Example.of(filter, matcher);
         List<Seller> list = sellersRepository.findAll(example);
 
+        for(Seller seller : list) {
+
+            seller.add(linkTo(methodOn(ReservationController.class)
+                    .getBySeller(seller.getId())).withRel("Reservations link"));
+
+            seller.add(linkTo(methodOn(ProductController.class)
+                    .getBySeller(seller.getId())).withRel("Products link: "));
+        }
+
         return list;
     }
+
     private boolean cnpjAlreadyExists(SellerDTO dto) {
         Optional<Seller> seller = sellersRepository.findByCnpj(dto.getCnpj());
         return seller.isPresent();

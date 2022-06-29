@@ -43,6 +43,18 @@ public class ReservationController {
         return service.getById(id);
     }
 
+    @GetMapping("/seller/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<InformationReservationDTO> getBySeller(@PathVariable Integer id) {
+        return service.getBySeller(id);
+    }
+
+    @GetMapping("/client/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<InformationReservationDTO> getByClient(@PathVariable Integer id) {
+        return service.getByClient(id);
+    }
+
     @PatchMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     public void updateStatus(@PathVariable Integer id , @RequestBody UpdateStatusReservationDTO dto){

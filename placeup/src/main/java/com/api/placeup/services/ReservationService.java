@@ -13,5 +13,7 @@ public interface ReservationService {
     Reservation save( ReservationDTO dto );
     Optional<Reservation> getCompleteReservation( Integer id);
     InformationReservationDTO getById(Integer id);
-    void updateStatus(Integer id, ReservationStatus statusPedido);
+    void updateStatus(Integer id, ReservationStatus reservationStatus);
+    List<InformationReservationDTO> getBySeller(Integer id);
+    List<InformationReservationDTO> getByClient(Integer id);
 }

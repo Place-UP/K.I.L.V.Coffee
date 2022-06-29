@@ -96,12 +96,15 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client getClientById(@PathVariable Integer id ){
-        return repository
+        Client client = repository
                 .findById(id)
                 .orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
                                 "Client not found."));
 
+        client.add(linkTo(methodOn(ReservationController.class).getByClient(id)).withRel("Reservations link"));
+
+        return client;
     }
 
     @Override
@@ -113,6 +116,11 @@ public class ClientServiceImpl implements ClientService {
 
         Example<Client> example = Example.of(filter, matcher);
         List<Client> list = repository.findAll(example);
+
+        for(Client client : list) {
+            client.add(linkTo(methodOn(ReservationController.class)
+                    .getByClient(client.getId())).withRel("Reservations link"));
+        }
 
         return list;
     }

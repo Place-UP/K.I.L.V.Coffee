@@ -69,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void delete(@PathVariable Integer id){
+    public void delete(Integer id){
         productRepository
                 .findById(id)
                 .map( p -> {
@@ -81,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getById(@PathVariable Integer id){
+    public Product getById(Integer id){
         return productRepository
                 .findById(id)
                 .orElseThrow( () ->
@@ -91,7 +91,15 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<Product> find(Product filter, @RequestParam("order") String order) {
+    public List<Product> getBySeller(Integer id) {
+        return productRepository
+                .findBySeller(id);
+    }
+
+
+
+    @Override
+    public List<Product> find(Product filter, String order) {
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()

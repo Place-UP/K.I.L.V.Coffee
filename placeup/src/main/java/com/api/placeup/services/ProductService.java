@@ -11,7 +11,8 @@ import java.util.List;
 public interface ProductService {
     Product update(ProductUpdateDTO dto, Integer id);
     Product save(ProductDTO dto);
-    Product getById(@PathVariable Integer id);
-    List<Product> find(Product filter, @RequestParam("order") String order);
-    void delete(@PathVariable Integer id);
+    Product getById(Integer id);
+    List<Product> find(Product filter, String order);
+    List<Product> getBySeller(Integer id);
+    void delete(Integer id);
 }

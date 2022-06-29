@@ -39,7 +39,7 @@ public class ReservationController {
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public InformationReservationDTO getById(@PathVariable Integer id ){
-        return getById(id);
+        return service.getById(id);
     }
 
     @PatchMapping("{id}")

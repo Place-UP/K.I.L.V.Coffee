@@ -49,8 +49,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
 
-
-
                 .antMatchers(HttpMethod.POST, "/api/clients")
                 .permitAll()
 
@@ -63,17 +61,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/api/clients/**")
                 .hasAnyRole("CLIENT")
 
-
-
                 .antMatchers("/api/attachment/**")
                 .hasAnyRole("SELLER")
 
-
-
-                .antMatchers("/api/products/**")
+                .antMatchers(HttpMethod.POST, "/api/products/**")
                 .hasAnyRole("SELLER")
 
+                .antMatchers(HttpMethod.PUT, "/api/products/**")
+                .hasAnyRole("SELLER")
 
+                .antMatchers(HttpMethod.DELETE, "/api/products/**")
+                .hasAnyRole("SELLER")
+
+                .antMatchers(HttpMethod.GET, "/api/products/**")
+                .hasAnyRole("SELLER", "CLIENT")
 
                 .antMatchers(HttpMethod.POST, "/api/reservation/")
                 .hasAnyRole("CLIENT")
@@ -83,7 +84,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers(HttpMethod.GET, "/api/reservation/")
                 .hasAnyRole("CLIENT", "SELLER")
-
 
                 .antMatchers(HttpMethod.POST, "/api/sellers")
                 .permitAll()
@@ -101,6 +101,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
 
                 .antMatchers("/sending-email")
+                .permitAll()
+
+                .antMatchers("swagger-ui.html#/")
                 .permitAll()
 
                 .anyRequest().authenticated()

@@ -50,8 +50,7 @@ public class Seller {
     @Column( name = "image_link")
     private String imageLink;
 
-    @JsonIgnore
-    @OneToMany( mappedBy = "seller" , fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "seller" )
     private Set<Product> products;
 
     @OneToOne(cascade = CascadeType.ALL)

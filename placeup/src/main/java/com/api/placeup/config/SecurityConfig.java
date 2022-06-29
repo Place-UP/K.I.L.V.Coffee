@@ -64,8 +64,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/api/clients/**")
                 .hasAnyRole("CLIENT")
 
-                .antMatchers("/api/attachment/**")
+                .antMatchers(HttpMethod.POST, "/api/attachments/**")
                 .hasAnyRole("SELLER")
+
+                .antMatchers(HttpMethod.GET, "/api/attachments/**")
+                .permitAll()
 
                 .antMatchers(HttpMethod.POST, "/api/products/**")
                 .hasAnyRole("SELLER")
